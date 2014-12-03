@@ -195,7 +195,7 @@ public class TxtGraphData {
 		
 	}
 
-	public void printUserNumbers(String filePath, String fenge) {
+	public int printUserNumbers(String filePath, String fenge) {
 		 try {	
 			Set<String> set = new HashSet<String>(10000000);
 	        File file=new File(filePath);
@@ -213,20 +213,21 @@ public class TxtGraphData {
 //		        	Util.block();
 		        	count ++;
 		        	if(count == 10000){
-		        		System.out.println("当前set大小为："+set.size()+"\t占用空间为："+SizeOf.humanReadable(SizeOf.deepSizeOf(set)));
+		        		System.out.println("set size->："+set.size()+"\tmemory："+SizeOf.humanReadable(SizeOf.deepSizeOf(set)));
 		        		count = 0;
 //		        		Util.block();
 		        	}
 		        }
 		        read.close();
+		        return set.size();
 		    }else{
-		        System.out.println("找不到指定的文件");
+		        System.out.println("file does not exist");
 		    }
 		} catch (Exception e) {
-		    System.out.println("读取文件内容出错");
+		    System.out.println("somethign is wrong");
 		    e.printStackTrace();
 		}
-		
+		return 0;
 	}
 	
 }
