@@ -2,15 +2,8 @@ package sdu.ir.create_normal_graph;
 
 import io.AppendFile;
 import io.FileOp;
-import irlab.dbOperate.Data;
-import irlab.util.Print;
-import irlab.util.Util;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Main {
 	static String[] ss = new String[]{"D:\\dataset\\finalsn\\part-00000","D:\\dataset\\finalsn\\part-00001","D:\\dataset\\finalsn\\part-00002","D:\\dataset\\finalsn\\part-00003","D:\\dataset\\finalsn\\part-00004","D:\\dataset\\finalsn\\part-00005","D:\\dataset\\finalsn\\part-00006","D:\\dataset\\finalsn\\part-00007","D:\\dataset\\finalsn\\part-00008","D:\\dataset\\finalsn\\part-00009","D:\\dataset\\finalsn\\part-00010","D:\\dataset\\finalsn\\part-00011","D:\\dataset\\finalsn\\part-00012","D:\\dataset\\finalsn\\part-00013","D:\\dataset\\finalsn\\part-00014","D:\\dataset\\finalsn\\part-00015","D:\\dataset\\finalsn\\part-00016","D:\\dataset\\finalsn\\part-00017","D:\\dataset\\finalsn\\part-00018","D:\\dataset\\finalsn\\part-00019","D:\\dataset\\finalsn\\part-00020","D:\\dataset\\finalsn\\part-00021","D:\\dataset\\finalsn\\part-00022","D:\\dataset\\finalsn\\part-00023","D:\\dataset\\finalsn\\part-00024","D:\\dataset\\finalsn\\part-00025","D:\\dataset\\finalsn\\part-00026","D:\\dataset\\finalsn\\part-00027","D:\\dataset\\finalsn\\part-00028","D:\\dataset\\finalsn\\part-00029"};
@@ -23,8 +16,9 @@ public class Main {
 //		}
 //		FileOp.printFile("D:\\dataset\\finalsn\\mergeFile",1000);
 //		FileOp.mergeFile(ss,"D:\\dataset\\finalsn\\mergeFile");
-		data.printUserNumbers("D:\\dataset\\finalsn\\mergeFile","\t");
-		data.printUserNumbers("\\home\\dataset\\mergeFile","\t");
+//		data.printUserNumbers("D:\\dataset\\finalsn\\mergeFile","\t");
+		int number = data.printUserNumbers("/home/qinyadong/dataset/mergeFile","\t");
+		AppendFile.append("/home/qinyadong/dataset/tempfile", "number of users==>"+number);
 //		data.load("dataset\\digRelation.txt"," ","utf-8");
 //		data.creatCorrespondMap();
 //		data.writeRelations2File("dataset\\finalDigRelation.txt");
