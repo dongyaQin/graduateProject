@@ -34,7 +34,7 @@ public class Main {
 		 DiffusionModel dm = icm;//选择要使用的传播模型
 		 Set set1 = new HashSet();
 //		 int i = 875;
-		 double pp = 0.05;
+		 double pp = 0.01;
 //		 while(pp < 0.2){
 			 icm.setDiffusionProbability(pp);
 			 StringBuffer sb = new StringBuffer();

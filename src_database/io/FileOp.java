@@ -11,11 +11,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
+import java.nio.CharBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import sdu.ir.util.Util;
-import text.Print;
 
 
 
@@ -333,8 +334,8 @@ import text.Print;
 //   	 data.write2Database(relation,"cdmsm");
 //   	 myFile.writeTxtFile("cdmsm","G:\\研究僧\\数据集\\数据集\\gh2.txt");
 //   	 readFileOneLine("C:\\Users\\qyd\\Desktop\\digg_friends.csv", "utf-8");
-   	 convertCSV2Txt("C:\\Users\\qyd\\Desktop\\digg_votes1.csv", "dataset\\digVotes.txt", "utf-8");
-       
+//   	 convertCSV2Txt("C:\\Users\\qyd\\Desktop\\digg_votes1.csv", "dataset\\digVotes.txt", "utf-8");
+       readFileFast("EmailEuAlllog.txt");
     }
 
 	public static void deletFile(String url) {
@@ -377,6 +378,19 @@ import text.Print;
 		
 	}
 
+	public static void readFileFast(String filePath){
+		try {
+			FileChannel inChannel = new RandomAccessFile(filePath, "r").getChannel();
+			MappedByteBuffer buffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
+			CharBuffer bs = buffer.asCharBuffer();
+			System.out.println(bs.charAt(0));
+			inChannel.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
+	
 	public static void printFile(String filePath, int intervalTime) {
 		 try {
 	           File file=new File(filePath);
