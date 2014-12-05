@@ -3,6 +3,8 @@ package text;
 import java.util.HashSet;
 import java.util.Set;
 
+import sdu.ir.util.Util;
+
 import net.sourceforge.sizeof.SizeOf;
 
 public class Test {
@@ -43,10 +45,12 @@ public class Test {
 		//configuration steps
 //		SizeOf.skipStaticField(true);
 //		SizeOf.setMinSizeToLog(10);
-		Set set = new HashSet(1000000);
+		Set set = new HashSet((int) 100000000L);
+//		Util.block();
 		System.out.println(set.size());
 		//calculate object size
 		try {
+			System.out.println(SizeOf.deepSizeOf(set));
 			System.out.println("size-->"+SizeOf.humanReadable(SizeOf.deepSizeOf(set)));
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block

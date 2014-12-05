@@ -197,7 +197,7 @@ public class TxtGraphData {
 
 	public int printUserNumbers(String filePath, String fenge) {
 		 try {	
-			Set<String> set = new HashSet<String>(10000000);
+			Set<String> set = new HashSet<String>(20000000);
 	        File file=new File(filePath);
 	        if(file.isFile() && file.exists()){ //判断文件是否存在
 		        InputStreamReader read = new InputStreamReader(new FileInputStream(file),"utf-8");//考虑到编码格式
@@ -205,6 +205,7 @@ public class TxtGraphData {
 		        String lineTxt = null;
 		        Map<Integer,ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 		        int count = 0;
+	        	long time1 = System.currentTimeMillis();
 		        while((lineTxt = bufferedReader.readLine()) != null){
 		        	String[] tmp = lineTxt.split(fenge);
 		        	for (int i = 0; i < tmp.length; i++) {
@@ -213,7 +214,9 @@ public class TxtGraphData {
 //		        	Util.block();
 		        	count ++;
 		        	if(count == 10000){
-		        		System.out.println("set size->："+set.size()+"\tmemory："+SizeOf.humanReadable(SizeOf.deepSizeOf(set)));
+		        		long time2 = System.currentTimeMillis();
+		        		System.out.println("set size->："+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
+		        		time1 = time2;
 		        		count = 0;
 //		        		Util.block();
 		        	}
