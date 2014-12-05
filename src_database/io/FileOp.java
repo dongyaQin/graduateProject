@@ -11,12 +11,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.nio.MappedByteBuffer;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import text.Print;
 
 
 
@@ -379,28 +377,28 @@ import text.Print;
 	}
 
 	public static void readFileFast(String filePath){
-		try {
-			int bufferSize = 8192;
-			FileInputStream f = new FileInputStream( filePath );
-			FileChannel ch = f.getChannel( );
-			MappedByteBuffer mb = ch.map( FileChannel.MapMode.READ_ONLY,
-			    0L, ch.size( ) );
-			byte[] barray = new byte[bufferSize];
-			long checkSum = 0L;
-			int nGet;
-			while( mb.hasRemaining( ) )
-			{
-			    nGet = Math.min( mb.remaining( ), bufferSize );
-			    mb.get( barray, 0, nGet );
-			    String s = new String(barray,"utf-8");
-			    String[] ss = s.split("\n");
-			    System.out.println(ss.length);
-			    Print.print(ss);
-			    System.out.println("out==>"+s);
-			    for ( int i=0; i<nGet; i++ )
-			        checkSum += barray[i];
-			}
-		} catch (Exception e) {
+		int bigSize = 128*1024;
+		int smallSize = 128*1024;
+		try {FileInputStream f = new FileInputStream( filePath );
+		FileChannel ch = f.getChannel( );
+		ByteBuffer bb = ByteBuffer.allocateDirect( bigSize );
+		byte[] barray = new byte[smallSize];
+		int nRead, nGet;
+		while ( (nRead=ch.read( bb )) != -1 )
+		{
+		    if ( nRead == 0 )
+		        continue;
+		    bb.position( 0 );
+		    bb.limit( nRead );
+		    while( bb.hasRemaining( ) )
+		    {
+		        nGet = Math.min( bb.remaining( ), smallSize );
+		        bb.get( barray, 0, nGet );
+		        String s = new String(barray,"utf-8");
+		        System.out.println(s);
+		    }
+		    bb.clear( );
+		}} catch (Exception e) {
 			// TODO: handle exception
 		}
 		

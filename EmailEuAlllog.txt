@@ -1,5 +1,4 @@
-
-UBLFGreedy begin!
+UBLFGreedybegin!
 UBLFGreedy end!time->896.942seconds
 LBGreedy begin!
 LBGreedy end!time->3106.823seconds

@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
@@ -238,38 +239,43 @@ public class TxtGraphData {
 	}
 	
 	public static void readFileFast(String filePath,String fenge){
-		Set<String> set = new HashSet<String>(20000000);
+		Set<String> set = new HashSet<String>(10000000);
+		int bigSize = 128*1024;
+		int smallSize = 128*1024;
 		try {
-			int bufferSize = 8192;
 			FileInputStream f = new FileInputStream( filePath );
 			FileChannel ch = f.getChannel( );
-			MappedByteBuffer mb = ch.map( FileChannel.MapMode.READ_ONLY,
-			    0L, ch.size( ) );
-			byte[] barray = new byte[bufferSize];
-//			long checkSum = 0L;
-			int nGet;
-			while( mb.hasRemaining( ) )
+			ByteBuffer bb = ByteBuffer.allocateDirect( bigSize );
+			byte[] barray = new byte[smallSize];
+			int nRead, nGet;
+			while ( (nRead=ch.read( bb )) != -1 )
 			{
-			    nGet = Math.min( mb.remaining( ), bufferSize );
-			    mb.get( barray, 0, nGet );
-			    String s = new String(barray,"utf-8");
-			    String[] ss = s.split("\n");
-			    for (int i = 0; i < ss.length; i++) {
-					String oneLine = ss[i];
-					if(oneLine !=null && !oneLine.equals("")){
-						String[] ids = oneLine.split(fenge);
+			    if ( nRead == 0 )
+			        continue;
+			    bb.position( 0 );
+			    bb.limit( nRead );
+			    while( bb.hasRemaining( ) )
+			    {
+			        nGet = Math.min( bb.remaining( ), smallSize );
+			        bb.get( barray, 0, nGet );
+			        String s = new String(barray,"utf-8");
+			        String[] lines = s.split("\n");
+			        for (int i = 0; i < lines.length; i++) {
+						String[] ids = lines[i].split(fenge);
 						for (int j = 0; j < ids.length; j++) {
 							set.add(ids[j]);
 						}
 					}
-				}
-				System.out.println(set.size());
+			        System.out.println("size->"+set.size());
+			    }
+			    bb.clear( );
 			}
-			System.out.println("Final Size=>"+set.size());
+			System.out.println("finale size=>"+set.size());
+		
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+			
 	}
 	
 }
