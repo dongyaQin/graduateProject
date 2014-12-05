@@ -215,13 +215,14 @@ public class TxtGraphData {
 		        	count ++;
 		        	if(count == 10000){
 		        		long time2 = System.currentTimeMillis();
-		        		System.out.println("set size->£º"+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
+		        		AppendFile.append("/home/qinyadong/dataset/tempfile","set size->£º"+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
 		        		time1 = time2;
 		        		count = 0;
 //		        		Util.block();
 		        	}
 		        }
 		        read.close();
+		        AppendFile.append("/home/qinyadong/dataset/tempfile","finalSize->"+set.size());
 		        return set.size();
 		    }else{
 		        System.out.println("file does not exist");
