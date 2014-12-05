@@ -197,7 +197,7 @@ public class TxtGraphData {
 
 	public int printUserNumbers(String filePath, String fenge) {
 		 try {	
-			Set<String> set = new HashSet<String>(20000000);
+			Set<String> set = new HashSet<String>(10000000);
 	        File file=new File(filePath);
 	        if(file.isFile() && file.exists()){ //判断文件是否存在
 		        InputStreamReader read = new InputStreamReader(new FileInputStream(file),"utf-8");//考虑到编码格式
@@ -215,6 +215,7 @@ public class TxtGraphData {
 		        	count ++;
 		        	if(count == 10000){
 		        		long time2 = System.currentTimeMillis();
+		        		System.out.println("set size->："+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
 		        		AppendFile.append("/home/qinyadong/dataset/tempfile","set size->："+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
 		        		time1 = time2;
 		        		count = 0;
