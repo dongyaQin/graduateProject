@@ -18,8 +18,8 @@ public class Main {
 //		FileOp.printFile("D:\\dataset\\finalsn\\mergeFile",1000);
 //		FileOp.mergeFile(ss,"D:\\dataset\\finalsn\\mergeFile");
 //		data.printUserNumbers("D:\\dataset\\finalsn\\mergeFile","\t");
-		int number = data.printUserNumbers("/home/qinyadong/dataset/mergeFile","\t");
-		AppendFile.append("/home/qinyadong/dataset/tempfile", "number of users==>"+number);
+		data.readFileFast("/home/qinyadong/dataset/mergeFile","\t");
+//		AppendFile.append("/home/qinyadong/dataset/tempfile", "number of users==>"+number);
 //		data.load("dataset\\digRelation.txt"," ","utf-8");
 //		data.creatCorrespondMap();
 //		data.writeRelations2File("dataset\\finalDigRelation.txt");

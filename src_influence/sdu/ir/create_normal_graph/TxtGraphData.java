@@ -273,7 +273,7 @@ public class TxtGraphData {
 			System.out.println("finale size=>"+set.size());
 		
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 			
 	}
