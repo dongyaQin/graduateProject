@@ -155,7 +155,7 @@ public class Print{
 	public static void print(Object[] contents) {
 		System.out.println("------------------------------------");
 		for (int i = 0; i < contents.length; i++) {
-			System.out.print(contents[i]+" ");
+			System.out.print(contents[i]+"*");
 		}
 		System.out.println();
 		System.out.println("------------------------------------");

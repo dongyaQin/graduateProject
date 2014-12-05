@@ -11,12 +11,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.RandomAccessFile;
-import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import text.Print;
 
 
 
@@ -380,11 +380,26 @@ import java.util.ArrayList;
 
 	public static void readFileFast(String filePath){
 		try {
-			FileChannel inChannel = new RandomAccessFile(filePath, "r").getChannel();
-			MappedByteBuffer buffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
-			CharBuffer bs = buffer.asCharBuffer();
-			System.out.println(bs.charAt(0));
-			inChannel.close();
+			int bufferSize = 8192;
+			FileInputStream f = new FileInputStream( filePath );
+			FileChannel ch = f.getChannel( );
+			MappedByteBuffer mb = ch.map( FileChannel.MapMode.READ_ONLY,
+			    0L, ch.size( ) );
+			byte[] barray = new byte[bufferSize];
+			long checkSum = 0L;
+			int nGet;
+			while( mb.hasRemaining( ) )
+			{
+			    nGet = Math.min( mb.remaining( ), bufferSize );
+			    mb.get( barray, 0, nGet );
+			    String s = new String(barray,"utf-8");
+			    String[] ss = s.split("\n");
+			    System.out.println(ss.length);
+			    Print.print(ss);
+			    System.out.println("out==>"+s);
+			    for ( int i=0; i<nGet; i++ )
+			        checkSum += barray[i];
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
