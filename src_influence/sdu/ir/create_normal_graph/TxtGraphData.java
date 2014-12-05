@@ -238,11 +238,13 @@ public class TxtGraphData {
 	}
 	
 	public static void readFileFast(String filePath,String fenge){
+		System.out.println("come in readFIleFast");
 		Set<String> set = new HashSet<String>(20000000);
 		try {
 			int bufferSize = 8192;
 			FileInputStream f = new FileInputStream( filePath );
 			FileChannel ch = f.getChannel( );
+			System.out.println(ch.size());
 			MappedByteBuffer mb = ch.map( FileChannel.MapMode.READ_ONLY,
 			    0L, ch.size( ) );
 			byte[] barray = new byte[bufferSize];
@@ -267,7 +269,7 @@ public class TxtGraphData {
 			}
 			System.out.println("Final Size=>"+set.size());
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 	}
