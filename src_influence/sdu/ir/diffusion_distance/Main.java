@@ -21,7 +21,7 @@ public class Main {
 	public static void main(String[] args) {
 		String dataName = "EmailEuAll";
 		double begin = System.currentTimeMillis();
-		 String filePath = "E:\\dataset\\ccir2014\\"+dataName+".txt";
+		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
 		 ReadGraph rd = new ReadGraph();
 		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,"\t");
 //		 Print.print(gh);
@@ -34,7 +34,7 @@ public class Main {
 		 DiffusionModel dm = icm;//选择要使用的传播模型
 		 Set set1 = new HashSet();
 //		 int i = 875;
-		 double pp = 0.01;
+		 double pp = 0.1;
 //		 while(pp < 0.2){
 			 icm.setDiffusionProbability(pp);
 			 StringBuffer sb = new StringBuffer();
