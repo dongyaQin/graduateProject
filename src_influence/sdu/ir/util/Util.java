@@ -93,6 +93,7 @@ public class Util {
 	}
 
 	public static void block() {
+		System.out.println("wait to input...");
 		scan.next();
 		
 	}
@@ -231,6 +232,28 @@ public class Util {
 	public static void block(String string) {
 		System.out.println(string);
 		block();
+		
+	}
+
+	/**
+	 * @param number
+	 * @param i
+	 * @param j
+	 * @param testedSet
+	 */
+	public static void randoms(int number, int i, int j, Set<Integer> testedSet) {
+		if(number > (j-i+1)/2){
+			for (int k = i; k <= j; k++) {
+				testedSet.add(k);
+			}
+			while(testedSet.size()>number){
+				testedSet.remove(random(i, j));
+			}
+		}else{
+			while(testedSet.size()<number){
+				testedSet.add(random(i, j));
+			}
+		}
 		
 	}
 

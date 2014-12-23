@@ -1,66 +1,79 @@
 package sdu.ir.diffusionmodel;
 
+import io.AppendFile;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
+import sdu.ir.util.PropagationProbability;
+import sdu.ir.util.Util;
 import text.Print;
 
 public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
+	private PropagationProbability pp;
 	private double p = 0.5;//感染邻居的概率
+	private double[] ps = new double[]{0.1,0.01,0.001};//Random中的概率
 	private boolean[] activated ;
 	private int count = 1000;
-	public class Node{
-		public Node(int i, int j) {
-			this.num_infect = i;
-			this.distance = j;
-		}
-		public double num_infect;
-		public double distance;
-		public void add(Node a) {
-			this.num_infect += a.num_infect;
-			this.distance += a.distance;
-			
-		}
-	}
+	private double[] inDegree;//diffusion probab equals to 1/indegree(v)
+	/*record is an array which record the result of this time of 
+	Monte-Calo simulation,the content of the array is below:
+		index 0:sum of diffusion distance;
+		index 1:sum of APD(average propagation distance);
+		index 2:sum of number of nodes infected;
+		others:number of nodes infected at step i+1
+	*/
+	private double[] record = new double[100];
 	//count是指模拟多少次，因为ICM模型下每次结果不一样，所以需要试验多次以使得结果更准确
-	public IndependentCascadeModel_RecordDistance(int count,double p) {
+	public IndependentCascadeModel_RecordDistance(int count,double p,PropagationProbability pp) {
 		this.count = count;
 		this.p = p;
+		this.pp = pp;
+	}
+	
+	private void initialRecordArray(Graph graph) {		
+		for (int i = 0; i < record.length; i++) {
+			record[i] = 0;
+		}
 	}
 	
 	public double diffusion(Graph graph,Set initialSet) {
-		return 0;
-	}
-	
-	public Node diffusion1(Graph graph,Set initialSet) {
+		if(pp==PropagationProbability.InDegree){
+			initialIndegreeArray(graph);
+		}
+		initialRecordArray(graph);
 		Set temp = new HashSet();
 		temp.addAll(initialSet);
-		Node sum = new Node(0,0);
 		for (int i = 0; i < count; i++) {
 //			System.out.println("第"+(i+1)+"次测试-------------------------");
-			//初始化传播之前的标记数组
-			
+			//初始化传播之前的标记数组	
 			initialSet.removeAll(initialSet);
 			initialSet.addAll(temp);
 			initial(graph,initialSet);
-//			Print.print(initialSet);
-			Node a = spread(graph,initialSet);
-//			System.out.println("==========================");
-			sum.add(a);
-//			System.out.println("第"+(i+1)+"次测试结果"+a);
-//			System.out.println();
+			spread(graph,initialSet);
 		}
 		//恢复原来的initialSet以免发生不必要的错误
 		initialSet.removeAll(initialSet);
 		initialSet.addAll(temp);
-		sum.distance = sum.distance/(double)count;
-		sum.num_infect = sum.num_infect/(double)count;
-		return sum;
+		return -1;
 		
 	}
+	/**
+	 * @param graph
+	 */
+	private void initialIndegreeArray(Graph graph) {
+		if(inDegree == null){
+			inDegree = new double[graph.size()];
+			for (int i = 0; i < inDegree.length; i++) {
+				inDegree[i] = 1/(double)graph.getIndegree(i);
+			}
+		}
+		
+	}
+
 	private void initial(Graph graph, Set initialSet) {
 		if(activated==null){
 			activated = new boolean[graph.size()+1];
@@ -79,15 +92,18 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 	}
 
 	//递归的用ICM传播模型传播
-	private Node spread(Graph graph, Set initialSet) {
+	private int spread(Graph graph, Set initialSet) {
 		Set newInfected = new HashSet();
 		boolean haveNewInfected = true;
 		int distance = 0;
 		double totalDistance = 0;
+		int totalInfluence = 0;
 		while(haveNewInfected){
 //			System.out.print(initialSet.size()+",");
 //			System.err.println("已经感染到第"+distance+"步，数量为--》"+initialSet.size());
 			totalDistance += distance*initialSet.size();
+			totalInfluence += initialSet.size();
+			record[distance+3] += initialSet.size();
 			distance++;
 			haveNewInfected = false;
 			for (Object obj: initialSet) {  
@@ -99,7 +115,7 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 						for (Object obj1 : temp) {
 							if(obj1 instanceof Integer){  
 								int i1= (Integer)obj1;  
-								if(!activated[i1] && checkCanInfect()){
+								if(!activated[i1] && checkCanInfect(i,i1)){
 //									System.out.println("成功感染节点"+i1);
 									newInfected.add(i1);
 									activated[i1] = true;
@@ -119,69 +135,71 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 			initialSet.addAll(newInfected);
 			newInfected.removeAll(newInfected);
 		}
-		int out = 0;
-		Node re = new Node(0,0);
-		for (int i = 0; i < activated.length; i++) {
-			if(activated[i])out++;
-		}
-//		Print.print(activated,1);
-//		System.out.println(totalDistance+"\t"+out);
-		double average_distance = totalDistance/(double)out;
-//		System.out.println("最终感染个数"+out+"\t最终的平均传播距离->"+totalDistance/out);
-		re.distance = average_distance;
-//		System.out.println("average_distance-->"+average_distance);
-		re.num_infect = out;
-//		System.out.println();
-		return re;
+		record[0] += distance - 1;
+		record[1] += totalDistance/totalInfluence;
+		record[2] += totalInfluence;
+		return totalInfluence;
 	}
 
-	private boolean checkCanInfect() {
-		if(Math.random() <= p)
-			return true;
-		else
-			return false;
+	private boolean checkCanInfect(int i, int j) {
+		switch (pp) {
+		case Constant:
+			if(Math.random() <= p)
+				return true;
+			else
+				return false;
+		case InDegree:
+			if(Math.random() <= inDegree[j])
+				return true;
+			else
+				return false;
+		case Random:
+			int a = Util.random(0, 2);
+			if(Math.random() <= ps[a])
+				return true;
+			else
+				return false;
+		}
+		return false;
+		
 	}
 	
 	public static void main(String[] args) {
-//		 String filePath = "E:\\数据集\\gh1.txt";
 //		 String filePath = "E:\\数据集\\temp.txt";
-		 String filePath = "ccir2014\\email2.txt";
+		 String filePath = "E:\\dataset\\ccir2014\\email2.txt";
 		ReadGraph rd = new ReadGraph();
 //		Graph graph1 = rd.readTxtFile2Graph(filePath, "AdjacentMatrix",2);
 //		Print.print(graph1);
 		Graph graph = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
 //		Print.print(graph);System.out.println(graph.size());
-		IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(200000,0.3);
+		IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(2000,0.1,PropagationProbability.Constant);
 		Set set = new HashSet();
 //		set.add(4);
 		int[] temp = new int[]{3481,112659, 217467,54846};
-		for (int i = 0; i < 1; i++) {
-			set.add(1);
-			Node x = icm.diffusion1(graph, set);
-			System.out.println((i+1)+"=>"+x);
+		for (int i = 0; i < 1000; i++) {
+			set.add(i);
+			icm.diffusion(graph, set);
 			set.remove(i);
+//			Util.block();
 		}
 		System.out.println(set.size());
-//		set.add(2);
-//		set.add(3);
-//		set.add(4);
-//		set.add(5);
-//		set.add(6);
-//		set.add(105);
-//		set.add(333);
-//		set.add(8);
-//		set.add(9);
-		double a = System.currentTimeMillis();
-		double x = icm.diffusion(graph, set);
-		double b = System.currentTimeMillis();
+//		double a = System.currentTimeMillis();
+//		double x = icm.diffusion(graph, set);
+//		double b = System.currentTimeMillis();
 		
-		System.out.println(x);
-		System.out.println((b-a)/1000+"S");
+//		System.out.println(x);
+//		System.out.println((b-a)/1000+"S");
 	}
 
 	public void setDiffusionProbability(double pp) {
 		this.p = pp;
 		
+	}
+	public double[] getRecord() {
+		return record;
+	}
+	public void setPp(PropagationProbability pp) {
+		this.pp = pp;
 	}
 
 }

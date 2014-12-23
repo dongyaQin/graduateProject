@@ -276,7 +276,7 @@ import java.util.ArrayList;
 		return null;
 	}
 	
-	public static void readFileOneLine(String filePath, String encoding) {
+	public static String readFileOneLine(String filePath, String encoding) {
 		 try {
             File file=new File(filePath);
             if(file.isFile() && file.exists()){ //判断文件是否存在
@@ -287,6 +287,7 @@ import java.util.ArrayList;
                 String lineTxt = bufferedReader.readLine();
                 System.out.println(lineTxt);
                 read.close();
+                return lineTxt;
 	        }else{
 	            System.out.println("找不到指定的文件");
 	        }
@@ -294,6 +295,7 @@ import java.util.ArrayList;
 	            System.out.println("读取文件内容出错");
 	            e.printStackTrace();
 	        }
+	        return null;
 	}
 	
 	public static void convertCSV2Txt(String filePath, String targetFile, String encoding) {

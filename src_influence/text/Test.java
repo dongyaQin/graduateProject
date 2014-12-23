@@ -1,8 +1,10 @@
 package text;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import sdu.ir.util.PropagationProbability;
 import sdu.ir.util.Util;
 
 import net.sourceforge.sizeof.SizeOf;
@@ -45,18 +47,54 @@ public class Test {
 		//configuration steps
 //		SizeOf.skipStaticField(true);
 //		SizeOf.setMinSizeToLog(10);
-		Set set = new HashSet((int) 100000000L);
-//		Util.block();
-		System.out.println(set.size());
-		//calculate object size
-		try {
-			System.out.println(SizeOf.deepSizeOf(set));
-			System.out.println("size-->"+SizeOf.humanReadable(SizeOf.deepSizeOf(set)));
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-	
+//		Set set = new HashSet((int) 100000000L);
+////		Util.block();
+//		System.out.println(set.size());
+//		//calculate object size
+//		try {
+//			System.out.println(SizeOf.deepSizeOf(set));
+//			System.out.println("size-->"+SizeOf.humanReadable(SizeOf.deepSizeOf(set)));
+//		} catch (IllegalArgumentException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		String temp ;
+//		int[] test = new int[1024*1024];
+//		int i = 0;
+//	while(true) {
+//		int[] temp1 = new int[1];
+//		System.out.println(i++);
+//		String temp = new String("asdfasf");;
+//	}
+//		String a = "1";
+//		String b = "2";
+//		String c = "12";
+//		String d = a+"2";
+//		String e = "1"+"2";
+//		System.out.println(c==d);
+//		System.out.println(c==e);
+//		ArrayList list = new ArrayList<String>();
+//		list.add(new Object());
+//		list.add(1);
+//		list.add("sdfa");
+//		for (Object object : list) {
+//			System.out.println(object);
+//		}
+//		PropagationProbability p = PropagationProbability.InDegree;
+//		System.out.println(p==PropagationProbability.InDegree);
+//		for (int i = 0; i < 10; i++) {
+//			System.out.println(Util.random(0, 2));
+//		}
+//		System.out.println(Integer.MAX_VALUE+"\t"+Integer.MIN_VALUE);
+//		System.out.println(Math.pow(2, 31));
+//		System.out.println(Integer.toBinaryString(-2147483648));
+//		System.out.println(Integer.toBinaryString(2147483647));
+//		System.out.println(Integer.toBinaryString(-2));
+//		System.out.println(Integer.toBinaryString(2));
+//		long a = 2147483647;
+//		System.out.println(a+1);
+		PropagationProbability pp = PropagationProbability.Constant;
+		System.out.println(pp);
 	}
 
 }

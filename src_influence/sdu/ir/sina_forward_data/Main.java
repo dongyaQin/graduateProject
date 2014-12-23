@@ -1,6 +1,7 @@
 package sdu.ir.sina_forward_data;
 
 import io.AppendFile;
+import io.ExcelOp;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,34 +13,57 @@ public class Main {
 
 	private void createAPDFile() {
 		long time1 = System.currentTimeMillis();
-		String filePath = "dataSet//weibodata";
+		String filePath = "E:\\dataset\\dataset\\weibodata";
 		File root = new File(filePath);
 		File[] files = root.listFiles();
 		Parser parser = new Parser();
 		parser.setReg("rusers:(.*?)\\|rdate");
 		StringBuffer sb = new StringBuffer();
-		int i = 1;
 		for(File file:files){
 		    String fileName = file.getName();
 		    File[] files2 = file.listFiles();
-		    for (File file2 : files2) {
-				Node node = parser.calAPD(file2);
-				if(node != null){
-//					System.out.println(file2.getName()+"\t"+node.num_infect+"\t"+node.apd);
-					//sb.append(node.num_infect+" "+node.apd+"\n");
-				}
-				
-			}
-//		    AppendFile.append("sina"+i+".txt",sb.toString());
-//		    sb = new StringBuffer();
-		    i++;
+//		    write2File(files2,"experimentsResult\\sina"+fileName,parser);
+		    write2Excel(files2,"experimentsResult\\1sina"+fileName+".xls",parser);
 		}
-		AppendFile.append("icm_apd//sinaForwardAPD.txt", sb.toString());
 		long time2 = System.currentTimeMillis();
 		System.out.println("totalTime ===>"+(time2-time1)/1000f+"seconds");
 		
 	}
 	
+	/**
+	 * @param files2
+	 * @param fileName
+	 * @param parser
+	 */
+	private void write2Excel(File[] files2, String fileName, Parser parser) {
+		ExcelOp.createExcel(fileName);
+		for (File file2 : files2) {
+			double[] record = parser.calDiffusionDetail(file2);
+			ExcelOp.recordPrepar(record);
+//			Util.block("write over one file!!!!!!!");
+		}
+		ExcelOp.writeAndcloseExcel();
+		
+	}
+
+	/**
+	 * @param files2
+	 * @param fileName
+	 * @param parser 
+	 */
+	private void write2File(File[] files2, String fileName, Parser parser) {
+		StringBuffer sb = new StringBuffer();
+		for (File file2 : files2) {
+			double[] record = parser.calDiffusionDetail(file2);
+//			System.out.println(file2.getName()+"\t"+node.num_infect+"\t"+node.apd);
+			for (int j = 0; j < record.length; j++) {
+				sb.append(record[j]+" ");
+			}
+			sb.append("\n");
+		}
+	    AppendFile.append(fileName,sb.toString());
+	}
+
 	private void calProportion() {
 		long time1 = System.currentTimeMillis();
 		String filePath = "dataSet//weibodata";
