@@ -237,19 +237,19 @@ public class DiffusionSimulate_test {
 	}
 	
 	public static void main(String[] args) throws MWException {
-		 dataName = "email2";
+		 dataName = "ca_HepPh1";
 		 file2Store = dataName+"log.txt";
 		 double begin = System.currentTimeMillis();
-		 String filePath = "E:\\dataset\\ccir2014\\"+dataName+".txt";
+		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
 		 String oneLine = FileOp.readFileOneLine(filePath, "utf-8");
 		 String fenge = " ";
 		if(oneLine.contains("\t"))fenge  = "\t";
 		 ReadGraph rd = new ReadGraph();
 		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,fenge);
-		 int executions = 200;//icm中模拟次数
+		 int executions = 20000;//icm中模拟次数
 		 int set = 50;//集合大小
-		 double[] p = new double[]{0.05,0.01,0.001};
-		 ICM3MultiThread icm3 = new ICM3MultiThread(executions,2, p[0], p[1], p[2]);
+		 double[] p = new double[]{0.1,0.05,0.01};
+		 ICM3MultiThread icm3 = new ICM3MultiThread(executions,8, p[0], p[1], p[2]);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm3;//选择要使用的传播模型
 
