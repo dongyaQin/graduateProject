@@ -10,7 +10,7 @@ import sdu.ir.diffusionmodel.ICM3MultiThread;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class Simulate20000 {
 	

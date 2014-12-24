@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class Parser {
 	private String reg = "";
@@ -47,44 +47,57 @@ public class Parser {
 		return list;
 	}
 	//APD average propagation distance
-	public Node calAPD(File file) {
+	public double[] calDiffusionDetail(File file) {
 		ArrayList<String[]> list = this.parse(file);
-		int[] record = new int[100];
+		double[] record = new double[100];
 		for (String[] ss : list) {
-			record[ss.length] ++;
+			record[ss.length+3] ++;
 		}
-		int i = 1;
+		record[3] = 1;
+		int maxDistance = 0;
+		int sumOfInfectedNodes = 0;
+		for (int i = 3; i < record.length; i++) {
+			if(record[i]==0)break;
+			maxDistance = i;
+			sumOfInfectedNodes += record[i];
+		}
+		record[0] = maxDistance-3;
+		record[2] = sumOfInfectedNodes;
+		int i = 3;
 		int numerator = 0;
 		int denominator = 0;
 		while(record[i] != 0){
-			numerator += record[i]*i;
+			numerator += record[i]*(i-3);
 			denominator += record[i];
 			i++;
 //			if(i>18){
 //				Util.block();
 //			}
 		}
-		if(denominator > 500){
-			int j = 1;
-			int fenzi = 0;
-			int fenmu = 0;
-			while(record[j] != 0){
-				fenmu += record[j];
-				if(j > 3){
-					fenzi += record[j];
-				}
-				System.out.print(record[j]+",");
-				j++;
-			}
-			System.out.print("-->"+(double)fenzi/fenmu);
-			if((double)fenzi/fenmu > 0.2){
-				System.out.println(file.getAbsolutePath());
-			}
-			System.out.println();
-		}
+//		if(denominator > 500){
+//			int j = 1;
+//			int fenzi = 0;
+//			int fenmu = 0;
+//			while(record[j] != 0){
+//				fenmu += record[j];
+//				if(j > 3){
+//					fenzi += record[j];
+//				}
+//				System.out.print(record[j]+",");
+//				j++;
+//			}
+//			System.out.print("-->"+(double)fenzi/fenmu);
+//			if((double)fenzi/fenmu > 0.2){
+//				System.out.println(file.getAbsolutePath());
+//			}
+//			System.out.println();
+//		}
 		denominator ++;//初始传播节点
 		double apd = numerator/(double)denominator;
-		return new Node(denominator,apd);
+		record[1] = apd;
+//		Print.print(record);
+//		Util.block();
+		return record;
 		
 		
 	}
@@ -116,5 +129,11 @@ public class Parser {
 		
 		return -1;
 	}
+
+	/**
+	 * @param file2
+	 * @return
+	 */
+
 
 }

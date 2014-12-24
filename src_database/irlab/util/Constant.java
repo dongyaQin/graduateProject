@@ -16,7 +16,7 @@ public final class Constant {
 	public static Map<String, String> CONSTANT = new HashMap<String, String>();
 	public static String HOST;// host
 	public static int PORT;// port
-	public static String url = "jdbc:mysql://211.87.234.38:3306/experiment_result";
+	public static String url = "jdbc:mysql://211.87.235.64:3306/experiment_result";
 	// public static String url = "jdbc:mysql://211.87.234.244:3306/renren";
 	public static String user = "root";
 	public static String password = "root";

@@ -18,7 +18,7 @@ import sdu.ir.simulate.DiffusionSimulate;
 import sdu.ir.storegraph.AdjacencyListWithWeight;
 import sdu.ir.util.Edge;
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class EdgeBetweenness {
 	int beginNode = 0;

@@ -1,19 +1,22 @@
 package sdu.ir.simulate;
 
 import io.AppendFile;
+import io.FileOp;
 import irlab.dbOperate.Data;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import sdu.ir.diffusionmodel.ICM3MultiThread;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
+import sdu.ir.util.IMMethod;
 import sdu.ir.util.NodeInfluenceAbility;
 import sdu.ir.util.NodeInfluenceAbilityEfficient;
 import sdu.ir.util.Util;
-import text.Print;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 
@@ -23,11 +26,14 @@ public class DiffusionSimulate_test {
 	static Data database = new Data();//Data对象用来往数据库写东西
 	static String suffix;//本次测试数据库表的后缀
 	static String dataName;//本次测试数据文件名
+	static String file2Store;
+	static Map<IMMethod,String> map= new HashMap<IMMethod, String>();
 	//下面分别记录用三种不同的选择初始集合方式，分别在初始集合大小从1-targetSize大小的情况下，最终影响的个数
 	
 	
 	static double[] communityDetectionHighdgree ;
 	static double[] communityDetectionGreedy ;
+	private static int canWrite2DB = 0;
 	public DiffusionSimulate_test(int targetSize) {
 		this.targetSize = targetSize;
 		
@@ -48,25 +54,9 @@ public class DiffusionSimulate_test {
 		double last_max = -1;//记录上一次影响的最大值
 		double last_max_gain = -1;
 		int selectedNode = -1;
-//		Util.load("gainResult.txt",record,last_max);
-//		for (int i = 0; i < record.length; i++) {
-//			if(record[i] != Double.MAX_VALUE){
-//				if(record[i] > last_max_gain){
-//					last_max_gain = record[i];
-//					selectedNode = i;
-//					max = last_max_gain + last_max;
-//				}
-//			}else{
-//				beginNode = i;
-//				break;
-//			}
-//		}
 		System.out.println(beginNode+" "+selectedNode+" "+max);
 		while(initSet.size() < targetSize){
 			long a=System.currentTimeMillis();
-			
-//			System.out.println("BASE->"+initSet);
-			AppendFile.append("gainResult", "BASE->"+initSet);
 			for (int i = beginNode; i < graph.size(); i++) {
 				if(!initSet.contains(i)){
 					if(record[i] <= last_max_gain)continue;
@@ -74,7 +64,7 @@ public class DiffusionSimulate_test {
 					double temp = dm.diffusion(graph, initSet);
 					record[i] = temp - last_max;
 					System.out.println(i+"->"+temp);
-					AppendFile.append("gainResult", i+"->"+temp);
+//					AppendFile.append("gainResult", i+"->"+temp);
 					if(temp > max){
 						max = temp;
 						selectedNode = i;
@@ -90,16 +80,17 @@ public class DiffusionSimulate_test {
 			initSet.add(selectedNode); 
 			selectedNode = -1;
 			System.out.println(initSet); 
-			double temp = dm.diffusion(graph, initSet);
-			greedy[initSet.size()-1] = temp;
-			database.write2Database(initSet.size(),temp,initSet, dataName+"_greedy"+suffix);
+			AppendFile.append(file2Store, "set size "+initSet.size()+"->"+initSet);
+			write2DB(initSet,IMMethod.Greedy);
+//			double temp = dm.diffusion(graph, initSet);
+//			greedy[initSet.size()-1] = temp;
+//			database.write2Database(initSet.size(),temp,initSet, dataName+"_greedy"+suffix);
 			System.out.println("excute time ===>"+(System.currentTimeMillis()-a)/1000f+" s ");
-//			Scanner scan = new Scanner(System.in);
-//			scan.next();
 		}
 		System.out.println("opt initial set"+initSet);
 		return greedy;
 	}
+
 	//根据度值的从大到小的顺序选择节点
 	private double[] highDegree(Graph graph,DiffusionModel dm) {
 		double[] highDegree = new double[targetSize];
@@ -124,7 +115,7 @@ public class DiffusionSimulate_test {
 
 	}
 
-	private double[] neiborNumGreedy(Graph graph, DiffusionModel dm, int numOfNeibor, int targetSize) {
+	private double[] neiborNumGreedy(Graph graph, DiffusionModel dm, int numOfNeibor) {
 		NodeInfluenceAbilityEfficient nia = new NodeInfluenceAbilityEfficient(graph, numOfNeibor);
 		double[] p = new double[numOfNeibor];
 		for (int i = 0; i < p.length; i++) {
@@ -136,7 +127,9 @@ public class DiffusionSimulate_test {
 		for (int i = 0; i < targetSize; i++) {
 			int max_gain = nia.get_max_gain_node_efficient_CELF(initSet);
 			initSet.add(max_gain);
-			result[initSet.size()-1] = dm.diffusion(graph, initSet);
+			write2DB(initSet,IMMethod.NeiborNumGreedy);
+			AppendFile.append(file2Store, "set size "+initSet.size()+"->"+initSet);
+//			result[initSet.size()-1] = dm.diffusion(graph, initSet);
 			System.out.println(initSet+"----->"+result[i]);
 			
 //			nia.refresh(max_gain,p);
@@ -176,35 +169,38 @@ public class DiffusionSimulate_test {
 		return result;
 	}
 	
-	public double[] neiborWeightNumGreedyEfficientCelf(Graph graph,DiffusionModel dm,int numOfNeibor,double[] p,int targetSize){
+	public double[] neiborWeightNumGreedyEfficientCelf(Graph graph,DiffusionModel dm,int numOfNeibor,double[] p){
 		NodeInfluenceAbilityEfficient nia = new NodeInfluenceAbilityEfficient(graph, numOfNeibor);
 		double[] result = new double[targetSize];
 		Set initSet = new HashSet();
 		for (int i = 0; i < targetSize; i++) {
 			int max_gain = nia.get_max_gain_node_efficient_CELF(initSet,p);
 			initSet.add(max_gain);
-			result[initSet.size()-1] = dm.diffusion(graph, initSet);
+			write2DB(initSet,IMMethod.TLLFGreedy);
+			AppendFile.append(file2Store, "set size "+initSet.size()+"->"+initSet);
+//			result[initSet.size()-1] = dm.diffusion(graph, initSet);
 			System.out.println("choose node----->"+max_gain);
-			database.write2Database(initSet.size(),result[initSet.size()-1],initSet, dataName+"_nWtNumGEfficientCELF"+suffix);
+//			database.write2Database(initSet.size(),result[initSet.size()-1],initSet, dataName+"_nWtNumGEfficientCELF"+suffix);
 		}
 		return result;
 	}
 	
-	public double[] degreeDiscountIC(Graph graph,DiffusionModel dm,int numOfNeibor,double[] p,int targetSize){
+	public double[] degreeDiscountIC(Graph graph,DiffusionModel dm,int numOfNeibor, int[] object){
 
 		double[] degreeDiscount = new double[targetSize];
 		int[] degree = new int[graph.size()];
 		for (int i = 0; i < graph.size(); i++) {
 			degree[i] = graph.getOutdegree(i);
 		}
-//		Print.print(degree);
 		Set initSet = new HashSet();
 		for (int i = 0; i < targetSize; i++) {
 			long a=System.currentTimeMillis();
 			int max = Util.findMax(degree,initSet,0);
-			System.out.println("maxdegree---->"+degree[max]);
-			Util.block();
+			System.out.println("maxdegree:"+max+"==>"+degree[max]);
+//			Util.block();
 			initSet.add(max);
+			write2DB(initSet,IMMethod.SingleDiscount);
+			AppendFile.append(file2Store, "set size "+initSet.size()+"->"+initSet);
 //			degreeDiscount[i] = dm.diffusion(graph, initSet);
 //			database.write2Database(initSet.size(),degreeDiscount[i],initSet, dataName+"_degreeDiscountIC"+suffix);
 //			System.out.println(initSet+"  "+degreeDiscount[i]);
@@ -231,6 +227,8 @@ public class DiffusionSimulate_test {
 			}
 			initSet.add(node);
 			System.out.println(initSet);
+			write2DB(initSet,IMMethod.Random);
+			AppendFile.append(file2Store, "set size "+initSet.size()+"->"+initSet);
 //			random[i] = dm.diffusion(gh, initSet);
 //			database.write2Database(initSet.size(),random[i],initSet, dataName+"_random"+suffix);
 //			System.out.println("time ===>"+(System.currentTimeMillis()-a)/1000f+" s ");
@@ -239,61 +237,118 @@ public class DiffusionSimulate_test {
 	}
 	
 	public static void main(String[] args) throws MWException {
-		
-		dataName = "EmailEuAll";
-		double begin = System.currentTimeMillis();
-		 String filePath = "ccir2014\\"+dataName+".txt";
+		 dataName = "email2";
+		 file2Store = dataName+"log.txt";
+		 double begin = System.currentTimeMillis();
+		 String filePath = "E:\\dataset\\ccir2014\\"+dataName+".txt";
+		 String oneLine = FileOp.readFileOneLine(filePath, "utf-8");
+		 String fenge = " ";
+		if(oneLine.contains("\t"))fenge  = "\t";
 		 ReadGraph rd = new ReadGraph();
-		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,"\t");
-//		 Print.print(gh);
-//		 		 Util.block();
-		 int executions = 20000;//icm中模拟次数
+		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,fenge);
+		 int executions = 200;//icm中模拟次数
 		 int set = 50;//集合大小
-		 double[] p = new double[]{0.5,0.3,0.1};
+		 double[] p = new double[]{0.05,0.01,0.001};
 		 ICM3MultiThread icm3 = new ICM3MultiThread(executions,2, p[0], p[1], p[2]);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm3;//选择要使用的传播模型
 
 		 suffix = Util.calSuffix(executions,set,p);
-		 database.createTables(dataName,suffix);
-//		 AppendFile.append(dataName+"log.txt", "greedy begin!");
-//		 double[] greedy = ds.greedy(gh, dm);
-//		 AppendFile.append(dataName+"log.txt", "greedy end!time->"+(System.currentTimeMillis()-begin)/1000f+"seconds");
-		 double record = System.currentTimeMillis();
-//		 AppendFile.append(dataName+"log.txt", "UBLFGreedy begin!");
-//		 double[] UBLFGreedy = ds.neiborNumGreedy(gh, dm, 3, set);
-//		 AppendFile.append(dataName+"log.txt", "UBLFGreedy end!time->"+(System.currentTimeMillis()-record)/1000f+"seconds");
-//		 record = System.currentTimeMillis();
-//		 AppendFile.append(dataName+"log.txt", "LBGreedy begin!");
-//		 double[] LBGreedy = ds.neiborWeightNumGreedyEfficient(gh, dm, 3, p ,set);
-//		 AppendFile.append(dataName+"log.txt", "LBGreedy end!time->"+(System.currentTimeMillis()-record)/1000f+"seconds");
-//		 
-//		 record = System.currentTimeMillis();
-//		 AppendFile.append(dataName+"log.txt", "LBLFGreedy begin!");
-		 double[] LBLFGreedy = ds.neiborWeightNumGreedyEfficientCelf(gh, dm, 3, p ,set);
-//		 AppendFile.append(dataName+"log.txt", "LBLFGreedy end!time->"+(System.currentTimeMillis()-record)/1000f+"seconds");
+		 canWrite2DB  = database.createTables(dataName,"0",suffix,map);
 		 
-//		 record = System.currentTimeMillis();
-//		 AppendFile.append(dataName+"log.txt", "singleDiscount begin!");
-//		 double[] singleDiscount = ds.degreeDiscountIC(gh, dm, 3, p, set);
-//		 AppendFile.append(dataName+"log.txt", "singleDiscount end!time->"+(System.currentTimeMillis()-record)/1000f+"seconds");
-
-//		 AppendFile.append(dataName+"log.txt", "highDegree begin!");
-//		 double[] highDegree = ds.highDegree(gh, dm);
-//		 AppendFile.append(dataName+"log.txt", "highDegree end!time->"+(System.currentTimeMillis()-begin)/1000f+"seconds");
-		 record = System.currentTimeMillis();
-//		 AppendFile.append(dataName+"log.txt", "random begin!");
-//		 double[] random = ds.random(gh, dm);
-//		 AppendFile.append(dataName+"log.txt", "random end!time->"+(System.currentTimeMillis()-record)/1000f+"seconds");
-
-		 //		 Print.print(neibor_greedy);
-//		 Print.print(degreeDiscountIC);
-//		 Print.print(highDegree);
-
+		 ds.recordGreedy(gh,dm,p);
+		 ds.recordTLLFGreedy(gh,dm,p);
+		 ds.recordSingleDiscount(gh,dm,p);
+		 ds.recordRandom(gh,dm,p);
+		 ds.recordNeiborNumGreedy(gh,dm,p);
+		 
 		 System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
 	}
 
-	
+	/**
+	 * @param gh
+	 * @param dm
+	 * @param p 
+	 */
+	private void recordNeiborNumGreedy(Graph gh, DiffusionModel dm, double[] p) {
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"NeiborNumGreedy begin!");
+		 double a = System.currentTimeMillis();
+		 double[] NeiborNumGreedy = this.neiborNumGreedy(gh, dm, 3);
+		 double b = System.currentTimeMillis();
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"NeiborNumGreedy spend->"+(b-a)/1000f+"seconds");
+
+		
+	}
+
+	/**
+	 * @param gh
+	 * @param dm
+	 * @param p 
+	 */
+	private void recordRandom(Graph gh, DiffusionModel dm, double[] p) {
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"random begin!");
+		 double a = System.currentTimeMillis();
+		 double[] random = this.random(gh, dm);
+		 double b = System.currentTimeMillis();
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"random spend->"+(b-a)/1000f+"seconds");
+
+		
+	}
+
+	/**
+	 * @param gh
+	 * @param dm
+	 * @param p 
+	 */
+	private void recordSingleDiscount(Graph gh, DiffusionModel dm, double[] p) {
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"SingleDiscount begin!");
+		 double a = System.currentTimeMillis();
+		 double[] DegreeDiscount = this.degreeDiscountIC(gh, dm, 3, null);
+		 double b = System.currentTimeMillis();
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"SingleDiscount spend->"+(b-a)/1000f+"seconds");
+
+		
+	}
+
+	/**
+	 * @param gh
+	 * @param dm
+	 * @param p 
+	 */
+	private void recordTLLFGreedy(Graph gh, DiffusionModel dm, double[] p) {
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"TLLFGreedy begin!");
+		 double a = System.currentTimeMillis();
+		 double[] TLLFGreedy = this.neiborWeightNumGreedyEfficientCelf(gh, dm, 3, p);
+		 double b = System.currentTimeMillis();
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"TLLFGreedy spend->"+(b-a)/1000f+"seconds");
+
+		
+	}
+
+	/**
+	 * @param gh
+	 * @param dm
+	 * @param p 
+	 */
+	private void recordGreedy(Graph gh, DiffusionModel dm, double[] p) {
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"greedy begin!");
+		 double a = System.currentTimeMillis();
+		 double[] greedy = this.greedy(gh, dm);
+		 double b = System.currentTimeMillis();
+		 AppendFile.append(file2Store, Util.getCurrentTime()+"greedy spend->"+(b-a)/1000f+"seconds");
+
+		
+	}
+
+	/**
+	 * @param initSet
+	 * @param greedy
+	 */
+	private void write2DB(Set initSet, IMMethod method) {
+		if(canWrite2DB != 1)return;
+		database.write2Database(initSet.size(),0,initSet,map.get(method));
+		
+	}
 
 	
 	

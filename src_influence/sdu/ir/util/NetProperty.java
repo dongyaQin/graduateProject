@@ -7,7 +7,7 @@ import java.util.Set;
 
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.Graph;
-import text.Print;
+import test.Print;
 
 public class NetProperty {
 	private Graph g;

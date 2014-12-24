@@ -1,16 +1,18 @@
 package sdu.ir.diffusion_distance;
 
 import io.AppendFile;
+import io.FileOp;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 import sdu.ir.diffusionmodel.IndependentCascadeModel_RecordDistance;
-import sdu.ir.diffusionmodel.IndependentCascadeModel_RecordDistance.Node;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.simulate.DiffusionSimulate_test;
+import sdu.ir.util.PropagationProbability;
 import sdu.ir.util.Util;
 
 public class Main {
@@ -20,40 +22,95 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		String dataName = "EmailEuAll";
+		String fenge = " ";
 		double begin = System.currentTimeMillis();
-		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
+//		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
+		 String filePath = "E:/dataset/ccir2014/"+dataName+".txt";
+		 String oneLine = FileOp.readFileOneLine(filePath, "utf-8");
+		 if(oneLine.contains("\t"))fenge = "\t";
 		 ReadGraph rd = new ReadGraph();
-		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,"\t");
+		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,fenge);
 //		 Print.print(gh);
 //		 Util.block();
-		 int executions = 2000;//icm中模拟次数
+		 int executions = 4000;//icm中模拟次数
 		 int set = 50;//集合大小
-		 double[] p = new double[]{0.5,0.3,0.1};
-		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.05);
+		
+		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.05, PropagationProbability.Constant);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm;//选择要使用的传播模型
-		 Set set1 = new HashSet();
-//		 int i = 875;
-		 double pp = 0.1;
-//		 while(pp < 0.2){
-			 icm.setDiffusionProbability(pp);
-			 StringBuffer sb = new StringBuffer();
-			 for (int i = 20000; i < 30000; i++) {
-				 set1.add(i);
-				 Node node = icm.diffusion1(gh, set1);
-				 System.out.println(i+"-->"+node.num_infect+"==>"+node.distance);
-				 set1.remove(i);
-				 sb.append(node.num_infect+" "+node.distance+"\n");
+		 
+		 Set<Integer> seedSet = new HashSet<Integer>();
+		 Set<Integer> testedSet = new HashSet<Integer>();
+		 int number = gh.size();
+		 if(gh.size()>500)
+			 number = 500;
+		 Util.randoms(number,0,gh.size()-1,testedSet);
+		 System.out.println(testedSet.size());
+		 double[] pps = {0.01,0.05,0.1};
+		 PropagationProbability[] pws = PropagationProbability.values();
+		 for (int i = 0; i < pws.length; i++) {
+			PropagationProbability pw = pws[i];
+			icm.setPp(pw);
+			if(pw == PropagationProbability.Constant){
+				for (int j = 0; j < pps.length; j++) {
+					double pp = pps[j];
+					icm.setDiffusionProbability(pp);
+					String newFileName = getFileName(dataName,pw,pp);
+					for (Integer in : testedSet) {
+						System.out.println(newFileName+"-node-"+in);
+						seedSet.add(in);
+						icm.diffusion(gh, seedSet);
+						recordResult(icm.getRecord(),newFileName,executions);
+						seedSet.remove(in);
+					}
+				}
+			}else{
+				String newFileName = getFileName(dataName,pw,0);
+				for (Integer in : testedSet) {
+					System.out.println(newFileName+"-node-"+in);
+					seedSet.add(in);
+					icm.diffusion(gh, seedSet);
+					recordResult(icm.getRecord(),newFileName,executions);
+					seedSet.remove(in);
+				}
 			}
-			AppendFile.append("icm_apd/"+dataName+pp+".txt", sb.toString());
-			System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");	
-			Util.block("输入。。。");
-			pp = pp + 0.02;
-//		 }
+
+		}
 		 
 		 System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
 	
 
+	}
+
+	/**
+	 * @param dataName
+	 * @param pw
+	 * @param pp
+	 * @return
+	 */
+	private static String getFileName(String dataName,
+			PropagationProbability pw, double pp) {
+		switch (pw) {
+		case Constant:
+			return dataName+pw+pp;
+		case InDegree:
+			return dataName+pw;
+		case Random:
+			return dataName+pw;
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 */
+	private static void recordResult(double[] record,String fileName, int count) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < record.length; i++) {
+			sb.append(record[i]/count+" ");
+		}
+		AppendFile.append(fileName, sb.toString());
+		
 	}
 
 }

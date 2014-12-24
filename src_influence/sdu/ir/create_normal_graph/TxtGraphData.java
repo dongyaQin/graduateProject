@@ -22,7 +22,7 @@ import net.sourceforge.sizeof.SizeOf;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class TxtGraphData {
 	ArrayList<int[]> relations=new ArrayList<int[]>();

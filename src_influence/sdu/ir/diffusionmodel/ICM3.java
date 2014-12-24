@@ -7,7 +7,7 @@ import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.NetProperty;
-import text.Print;
+import test.Print;
 //经测试，正确！
 public class ICM3 implements DiffusionModel{
 	private double p1 = 0.5;//感染邻居的概率

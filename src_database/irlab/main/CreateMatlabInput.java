@@ -6,7 +6,7 @@ import irlab.dbOperate.Data;
 import java.io.File;
 
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class CreateMatlabInput {
 
