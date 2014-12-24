@@ -1,4 +1,4 @@
-package text;
+package test;
 
 public class A1 {
 	public static final int i=1;

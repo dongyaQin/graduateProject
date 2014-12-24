@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class Parser {
 	private String reg = "";

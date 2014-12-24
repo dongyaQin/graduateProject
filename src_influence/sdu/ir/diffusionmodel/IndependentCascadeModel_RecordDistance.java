@@ -10,7 +10,7 @@ import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.PropagationProbability;
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 	private PropagationProbability pp;

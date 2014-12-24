@@ -6,7 +6,7 @@ import java.util.Set;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
-import text.Print;
+import test.Print;
 @SuppressWarnings({ "unused", "rawtypes" })
 public class LinearThresholdModel implements DiffusionModel{
 	private double[] thresholds;;

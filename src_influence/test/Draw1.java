@@ -1,4 +1,4 @@
-package text;
+package test;
 
 //任意曲线绘制
 //抛物线形如y=a*x^2+b*x+c(其中a！=0); 双曲线表达式 x*y=c(其中c！=0);

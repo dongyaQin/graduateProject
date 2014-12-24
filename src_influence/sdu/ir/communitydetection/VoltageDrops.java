@@ -9,7 +9,7 @@ import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.Constant;
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 public class VoltageDrops {
 	int refreshTimes = 50;

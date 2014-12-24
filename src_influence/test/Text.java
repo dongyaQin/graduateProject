@@ -1,4 +1,4 @@
-package text;
+package test;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 

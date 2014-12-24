@@ -1,4 +1,4 @@
-package text;
+package test;
 import java.applet.Applet;
 import java.awt.Graphics;
 public class Draw2 extends Applet

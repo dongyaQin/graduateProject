@@ -2,6 +2,8 @@ package sdu.ir.util;
 
 import io.FileOp;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -212,11 +214,6 @@ public class Util {
 		}
 	}
 
-	public static void main(String[] args) {
-//		load("E:\\software\\Java\\workspace\\GraduationProject\\gainResult.txt", null, 0);
-		System.out.println(random(1,10, 11));
-	}
-
 	public static Set<Integer> random(int i, int size, int j) {
 		Set<Integer> set = new HashSet<Integer>();
 		int node = -1;
@@ -255,6 +252,20 @@ public class Util {
 			}
 		}
 		
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getCurrentTime() {
+		SimpleDateFormat formatter = new SimpleDateFormat("MM月dd日HH时mm分");
+		return formatter.format(new Date());
+
+
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(getCurrentTime());
 	}
 
 }

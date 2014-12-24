@@ -14,7 +14,7 @@ import sdu.ir.interfaces.Graph;
 import sdu.ir.storegraph.AdjacencyListWithWeight;
 import sdu.ir.util.NetProperty;
 import sdu.ir.util.Util;
-import text.Print;
+import test.Print;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 

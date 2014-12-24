@@ -8,9 +8,12 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import sdu.ir.util.IMMethod;
 
 public class Data {
 
@@ -76,11 +79,11 @@ public class Data {
 		
 	}
 
-	public void write2Database(int j, double influence, Set initSet, String table) {
+	public void write2Database(int sizeOfInitSet, double influence, Set initSet, String table) {
 		Savepoint s = null;
 		try {
 			s = DAOSupport.beginTransaction();
-			DAOSupport.save(table, "*", " ("+j+","+influence+", '"+initSet.toString()+"')");
+			DAOSupport.save(table, "*", " ("+sizeOfInitSet+","+influence+", '"+initSet.toString()+"')");
 			DAOSupport.commitTransaction();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,16 +108,23 @@ public class Data {
 		return arr;
 	}
 
-	public void createTables(String dataName, String suffix) {
-		
-		this.createTable(dataName+"_greedy"+suffix);
-//		this.createTable(dataName+"_highDegree"+suffix);
-//		this.createTable(dataName+"_neiborWeightNumGreedy"+suffix);
-		this.createTable(dataName+"_nWtNumGEfficient"+suffix);
-		this.createTable(dataName+"_nWtNumGEfficientCELF"+suffix);
-//		this.createTable(dataName+"_neiborNumGreedyE"+suffix);
-		this.createTable(dataName+"_degreeDiscountIC"+suffix);
-		this.createTable(dataName+"_random"+suffix);
+	public int createTables(String dataName, String prefix, String suffix, Map<IMMethod, String> map) {
+		String greedy = prefix+dataName+"_greedy"+suffix;
+		String tllfGreedy = prefix+dataName+"_tllfgreedy"+suffix;
+		String neiborNumGreedy = prefix+dataName+"_neiborNumGreedyE"+suffix;
+		String degreeDiscount = prefix+dataName+"_degreeDiscountIC"+suffix;
+		String random = prefix+dataName+"_random"+suffix;
+		this.createTable(greedy);
+		this.createTable(tllfGreedy);
+		this.createTable(neiborNumGreedy);
+		this.createTable(degreeDiscount);
+		this.createTable(random);
+		map.put(IMMethod.Greedy, greedy);
+		map.put(IMMethod.NeiborNumGreedy, neiborNumGreedy);
+		map.put(IMMethod.Random, random);
+		map.put(IMMethod.SingleDiscount, degreeDiscount);
+		map.put(IMMethod.TLLFGreedy, tllfGreedy);
+		return 1;
 	}
 	
 	public void deleteTables(String dataName, String suffix){

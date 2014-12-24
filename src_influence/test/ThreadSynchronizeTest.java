@@ -1,4 +1,4 @@
-package text;
+package test;
 
 public class ThreadSynchronizeTest {
 

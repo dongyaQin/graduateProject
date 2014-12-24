@@ -6,7 +6,7 @@ import java.util.Set;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
-import text.Print;
+import test.Print;
 
 public class IndependentCascadeModel implements DiffusionModel{
 	private double p = 0.5;//¸ÐÈ¾ÁÚ¾ÓµÄ¸ÅÂÊ
