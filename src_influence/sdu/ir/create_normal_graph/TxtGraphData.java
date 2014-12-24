@@ -199,8 +199,10 @@ public class TxtGraphData {
 	}
 
 	public int printUserNumbers(String filePath, String fenge) {
+
+    	long time1 = System.currentTimeMillis();
 		 try {	
-			Set<String> set = new HashSet<String>(10000000);
+			Set<String> set = new HashSet<String>(20000000);
 	        File file=new File(filePath);
 	        if(file.isFile() && file.exists()){ //判断文件是否存在
 		        InputStreamReader read = new InputStreamReader(new FileInputStream(file),"utf-8");//考虑到编码格式
@@ -208,7 +210,6 @@ public class TxtGraphData {
 		        String lineTxt = null;
 		        Map<Integer,ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 		        int count = 0;
-	        	long time1 = System.currentTimeMillis();
 		        while((lineTxt = bufferedReader.readLine()) != null){
 		        	String[] tmp = lineTxt.split(fenge);
 		        	for (int i = 0; i < tmp.length; i++) {
@@ -219,14 +220,15 @@ public class TxtGraphData {
 		        	if(count == 10000){
 		        		long time2 = System.currentTimeMillis();
 		        		System.out.println("set size->："+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
-		        		AppendFile.append("/home/qinyadong/dataset/tempfile","set size->："+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
-		        		time1 = time2;
+//		        		AppendFile.append("/home/qinyadong/dataset/tempfile","set size->："+set.size()+"\ttime cost->"+(time2-time1)/1000f+"seconds");
+//		        		time1 = time2;
 		        		count = 0;
 //		        		Util.block();
 		        	}
 		        }
 		        read.close();
-		        AppendFile.append("/home/qinyadong/dataset/tempfile","finalSize->"+set.size());
+		        long time22 = System.currentTimeMillis();
+		        AppendFile.append("/home/qinyadong/dataset/tempfile","finalSize->"+set.size()+"total time->"+(time22-time1)/1000f+"seconds");
 		        return set.size();
 		    }else{
 		        System.out.println("file does not exist");
@@ -239,7 +241,8 @@ public class TxtGraphData {
 	}
 	
 	public static void readFileFast(String filePath,String fenge){
-		Set<String> set = new HashSet<String>(10000000);
+		long time1 = System.currentTimeMillis();
+		Set<String> set = new HashSet<String>(20000000);
 		int bigSize = 128*1024;
 		int smallSize = 128*1024;
 		try {
@@ -259,19 +262,28 @@ public class TxtGraphData {
 			        nGet = Math.min( bb.remaining( ), smallSize );
 			        bb.get( barray, 0, nGet );
 			        String s = new String(barray,"utf-8");
+//			        System.out.println(s);
 			        String[] lines = s.split("\n");
 			        for (int i = 0; i < lines.length; i++) {
-						String[] ids = lines[i].split(fenge);
+			        	String[] ids = lines[i].split(fenge);
 						for (int j = 0; j < ids.length; j++) {
 							set.add(ids[j]);
 						}
 					}
-			        System.out.println("size->"+set.size());
+			        int i = 0;
+//			        for (String string : set) {
+//						System.out.println(i+++"-->"+string);
+//					}
+//			        Util.block();
+//			        System.out.println("size->"+set.size());
 			    }
 			    bb.clear( );
+			    System.out.println(set.size());
+//			    Util.block();
 			}
 			System.out.println("finale size=>"+set.size());
-		
+		long time2 = System.currentTimeMillis();
+		System.out.println("totalTime->"+(time2-time1)/1000f+"seconds");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
