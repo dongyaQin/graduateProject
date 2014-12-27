@@ -276,11 +276,11 @@ import java.util.ArrayList;
 		return null;
 	}
 	
-	public static String readFileOneLine(String filePath, String encoding) {
+	public static String readFileOneLine(String filePath) {
 		 try {
             File file=new File(filePath);
             if(file.isFile() && file.exists()){ //判断文件是否存在
-                InputStreamReader read = new InputStreamReader( new FileInputStream(file),encoding);//考虑到编码格式
+                InputStreamReader read = new InputStreamReader( new FileInputStream(file));//考虑到编码格式
                 BufferedReader bufferedReader = new BufferedReader(read);
                 ArrayList<String[]> list = new ArrayList<String[]>();
                 StringBuffer sb = new StringBuffer("");
