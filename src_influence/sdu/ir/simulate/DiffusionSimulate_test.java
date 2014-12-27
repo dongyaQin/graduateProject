@@ -237,7 +237,7 @@ public class DiffusionSimulate_test {
 	}
 	
 	public static void main(String[] args) throws MWException {
-		 dataName = "ca_HepPh1";
+		 dataName = "EmailEuAll";
 		 file2Store = dataName+"log.txt";
 		 double begin = System.currentTimeMillis();
 		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
@@ -256,7 +256,7 @@ public class DiffusionSimulate_test {
 		 suffix = Util.calSuffix(executions,set,p);
 		 canWrite2DB  = database.createTables(dataName,"0",suffix,map);
 		 
-		 ds.recordGreedy(gh,dm,p);
+//		 ds.recordGreedy(gh,dm,p);
 		 ds.recordTLLFGreedy(gh,dm,p);
 		 ds.recordSingleDiscount(gh,dm,p);
 		 ds.recordRandom(gh,dm,p);
