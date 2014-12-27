@@ -93,6 +93,21 @@ public class Data {
 		
 		
 	}
+	
+	public void update2Database(int sizeOfInitSet, double influence, Set initSet, String table) {
+		Savepoint s = null;
+		try {
+			s = DAOSupport.beginTransaction();
+			DAOSupport.update(table, "influence="+influence,"k="+sizeOfInitSet);
+			DAOSupport.commitTransaction();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Util.block();
+			DAOSupport.rollbackTransaction(s);
+		}
+		
+		
+	}
 
 	public double[][] rela2mem(int i, int j) {
 		if(j >= this.relationLength){
