@@ -95,7 +95,7 @@ public class Test {
 //		s.push(a);
 //		System.out.println(a);
 //		String s = FileOp.readFileOneLine("G:\\研究僧\\数据集\\数据集\\soc_pokec_relationships.txt");
-		FileOp.printFile("G:\\研究僧\\数据集\\数据集\\soc_pokec_relationships.txt", 10);
+		FileOp.printFile("G:\\研究僧\\数据集\\数据集\\dealed_soc_pokec.txt", 10);
 
 	}
 

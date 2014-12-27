@@ -13,6 +13,7 @@ import sdu.ir.diffusionmodel.ICM3MultiThread;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
+import sdu.ir.util.Constant;
 import sdu.ir.util.IMMethod;
 import sdu.ir.util.NodeInfluenceAbility;
 import sdu.ir.util.NodeInfluenceAbilityEfficient;
@@ -237,10 +238,10 @@ public class DiffusionSimulate_test {
 	}
 	
 	public static void main(String[] args) throws MWException {
-		 dataName = "EmailEuAll";
+		 dataName = "ca_hepph1";
 		 file2Store = dataName+"log.txt";
 		 double begin = System.currentTimeMillis();
-		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
+		 String filePath = Constant.filePathWindows+dataName+".txt";
 		 String oneLine = FileOp.readFileOneLine(filePath);
 		 String fenge = " ";
 		if(oneLine.contains("\t"))fenge  = "\t";
@@ -249,18 +250,18 @@ public class DiffusionSimulate_test {
 		 int executions = 20000;//icm中模拟次数
 		 int set = 50;//集合大小
 		 double[] p = new double[]{0.1,0.05,0.01};
-		 ICM3MultiThread icm3 = new ICM3MultiThread(executions,8, p[0], p[1], p[2]);
+		 ICM3MultiThread icm3 = new ICM3MultiThread(4000,2, p[0], p[1], p[2]);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm3;//选择要使用的传播模型
 
 		 suffix = Util.calSuffix(executions,set,p);
-		 canWrite2DB  = database.createTables(dataName,"0",suffix,map);
+//		 canWrite2DB  = database.createTables(dataName,"0",suffix,map);
 		 
-//		 ds.recordGreedy(gh,dm,p);
-		 ds.recordTLLFGreedy(gh,dm,p);
-		 ds.recordSingleDiscount(gh,dm,p);
-		 ds.recordRandom(gh,dm,p);
-		 ds.recordNeiborNumGreedy(gh,dm,p);
+		 ds.recordGreedy(gh,dm,p);
+//		 ds.recordTLLFGreedy(gh,dm,p);
+//		 ds.recordSingleDiscount(gh,dm,p);
+//		 ds.recordRandom(gh,dm,p);
+//		 ds.recordNeiborNumGreedy(gh,dm,p);
 		 
 		 System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
 	}
