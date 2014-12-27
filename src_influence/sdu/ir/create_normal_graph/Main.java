@@ -11,11 +11,11 @@ public class Main {
 
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		String url = "/home/qinyadong/dataset/ccir2014/soc_pokec_relationships.txt";
+		String url = "/home/qinyadong/dataset/ccir2014/dealed_soc_pokec.txt";
 		TxtGraphData data = new TxtGraphData();
-		data.load(url,"\t", "utf-8");
+		data.load(url," ", "utf-8");
 		data.creatCorrespondMap();
-		data.write2File("/home/qinyadong/dataset/ccir2014/dealed_soc_pokec.txt");
+//		data.write2File("/home/qinyadong/dataset/ccir2014/dealed_soc_pokec.txt");
 //		FileOp.mergeFile(ss,"D:\\dataset\\finalsn\\mergeFile");
 //		data.printUserNumbers("D:\\dataset\\finalsn\\mergeFile","\t");
 //		data.readFileFast("/home/qinyadong/dataset/mergeFile","\t");

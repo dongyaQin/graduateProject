@@ -26,6 +26,7 @@ public class ReadGraph {
                 String lineTxt = null;
                 int count = 0;
                 while((lineTxt = bufferedReader.readLine()) != null){
+                	if(lineTxt.equals(""))continue;
                     list.add(lineTxt.split(fenge));
                     System.out.println(count);
                     count++;

@@ -52,10 +52,16 @@ public class TxtGraphData {
 		        ArrayList<String[]> list = new ArrayList<String[]>();
 		        StringBuffer sb = new StringBuffer("");
 		        String lineTxt = null;
+		        int i = 0;
 		        while((lineTxt = bufferedReader.readLine()) != null){
+		        	if(lineTxt.equals(""))continue;
 		        	String[] tmp = lineTxt.split(fenge);
 		        	int[] a = new int[]{Integer.parseInt(tmp[0]),Integer.parseInt(tmp[1])};
 		        	relations.add(a);
+		        	i++;
+		        	if(i%100000==0){
+		        		System.out.println(i);
+		        	}
 		        }
 		        read.close();
 	    }else{

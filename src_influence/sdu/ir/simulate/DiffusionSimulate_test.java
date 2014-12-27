@@ -237,7 +237,7 @@ public class DiffusionSimulate_test {
 	}
 	
 	public static void main(String[] args) throws MWException {
-		 dataName = "EmailEuAll";
+		 dataName = "dealedsocpokec";
 		 file2Store = dataName+"log.txt";
 		 double begin = System.currentTimeMillis();
 		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
