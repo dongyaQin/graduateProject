@@ -115,22 +115,16 @@ public class IndependentCascadeModel implements DiffusionModel{
 	public static void main(String[] args) {
 //		 String filePath = "E:\\数据集\\gh1.txt";
 //		 String filePath = "E:\\数据集\\temp.txt";
-		 String filePath = "ccir2014\\gh2.txt";
+		 String filePath = "E:\\dataset\\ccir2014\\test.txt";
 		ReadGraph rd = new ReadGraph();
 //		Graph graph1 = rd.readTxtFile2Graph(filePath, "AdjacentMatrix",2);
 //		Print.print(graph1);
 		Graph graph = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
 //		Print.print(graph);System.out.println(graph.size());
-		IndependentCascadeModel icm = new IndependentCascadeModel(200000,0.1);
+		IndependentCascadeModel icm = new IndependentCascadeModel(2000000,0.5);
 		Set set = new HashSet();
-//		set.add(4);
-		int[] temp = new int[]{3481,112659, 217467,54846};
-		for (int i = 0; i < 9; i++) {
-			set.add(i);
-			double x = icm.diffusion(graph, set);
-			System.out.println((i+1)+"=>"+x);
-			set.remove(i);
-		}
+		set.add(0);
+
 		System.out.println(set.size());
 //		set.add(2);
 //		set.add(3);

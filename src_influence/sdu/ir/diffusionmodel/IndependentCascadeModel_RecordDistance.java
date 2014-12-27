@@ -8,6 +8,7 @@ import java.util.Set;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
+import sdu.ir.util.Constant;
 import sdu.ir.util.PropagationProbability;
 import sdu.ir.util.Util;
 import test.Print;
@@ -34,7 +35,7 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 		this.pp = pp;
 	}
 	
-	private void initialRecordArray(Graph graph) {		
+	private void initialRecordArray() {		
 		for (int i = 0; i < record.length; i++) {
 			record[i] = 0;
 		}
@@ -44,7 +45,7 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 		if(pp==PropagationProbability.InDegree){
 			initialIndegreeArray(graph);
 		}
-		initialRecordArray(graph);
+		initialRecordArray();
 		Set temp = new HashSet();
 		temp.addAll(initialSet);
 		for (int i = 0; i < count; i++) {
@@ -166,29 +167,38 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 	
 	public static void main(String[] args) {
 //		 String filePath = "E:\\Êý¾Ý¼¯\\temp.txt";
-		 String filePath = "E:\\dataset\\ccir2014\\email2.txt";
+		 String filePath = Constant.filePathWindows+"EmailEuAll.txt";
 		ReadGraph rd = new ReadGraph();
 //		Graph graph1 = rd.readTxtFile2Graph(filePath, "AdjacentMatrix",2);
 //		Print.print(graph1);
-		Graph graph = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
+		Graph graph = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2,"\t");
 //		Print.print(graph);System.out.println(graph.size());
-		IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(2000,0.1,PropagationProbability.Constant);
+		IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(1000,0.02,PropagationProbability.Constant);
 		Set set = new HashSet();
-//		set.add(4);
-		int[] temp = new int[]{3481,112659, 217467,54846};
-		for (int i = 0; i < 1000; i++) {
-			set.add(i);
-			icm.diffusion(graph, set);
-			set.remove(i);
-//			Util.block();
-		}
-		System.out.println(set.size());
-//		double a = System.currentTimeMillis();
-//		double x = icm.diffusion(graph, set);
-//		double b = System.currentTimeMillis();
 		
-//		System.out.println(x);
-//		System.out.println((b-a)/1000+"S");
+		
+		int[] degree = new int[graph.size()];
+		for (int i = 0; i < graph.size(); i++) {
+			degree[i] = graph.getOutdegree(i);
+		}
+//		Print.print(degree);
+		Set initSet = new HashSet();
+		for (int i = 0; i < 30; i++) {
+			long a=System.currentTimeMillis();
+			int max = Util.findMax(degree,0);
+			set.add(max);
+			icm.diffusion(graph, set);
+			double[] t = icm.getRecord();
+			for (int j = 0; j < t.length; j++) {
+				System.out.print(new java.text.DecimalFormat("#0.##").format(t[j]/1000)+" ");
+			}
+			System.out.println();
+			set.remove(max);
+			degree[max] = -1;
+		}
+		
+
+		System.out.println(set.size());
 	}
 
 	public void setDiffusionProbability(double pp) {

@@ -1,13 +1,6 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import sdu.ir.util.PropagationProbability;
-import sdu.ir.util.Util;
-
-import net.sourceforge.sizeof.SizeOf;
+import java.util.Stack;
 
 public class Test {
 
@@ -93,8 +86,12 @@ public class Test {
 //		System.out.println(Integer.toBinaryString(2));
 //		long a = 2147483647;
 //		System.out.println(a+1);
-		PropagationProbability pp = PropagationProbability.Constant;
-		System.out.println(pp);
+//		PropagationProbability pp = PropagationProbability.Constant;
+//		System.out.println(pp);
+		Stack<Character> s = new Stack<Character>();
+		char a = 'A'+1;
+		s.push(a);
+		System.out.println(a);
 	}
 
 }

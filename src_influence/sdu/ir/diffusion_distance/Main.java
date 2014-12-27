@@ -32,7 +32,7 @@ public class Main {
 		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,fenge);
 //		 Print.print(gh);
 //		 Util.block();
-		 int executions = 4000;//icm中模拟次数
+		 int executions = 10000;//icm中模拟次数
 		 int set = 50;//集合大小
 		
 		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.05, PropagationProbability.Constant);
@@ -42,12 +42,12 @@ public class Main {
 		 Set<Integer> seedSet = new HashSet<Integer>();
 		 Set<Integer> testedSet = new HashSet<Integer>();
 		 int number = gh.size();
-		 if(gh.size()>500)
-			 number = 500;
+		 if(gh.size()>1000)
+			 number = 1000;
 		 Util.randoms(number,0,gh.size()-1,testedSet);
 		 System.out.println(testedSet.size());
-		 double[] pps = {0.01,0.05,0.1};
-		 PropagationProbability[] pws = PropagationProbability.values();
+		 double[] pps = {0.05,0.1};
+		 PropagationProbability[] pws = new PropagationProbability[]{PropagationProbability.Constant};
 		 for (int i = 0; i < pws.length; i++) {
 			PropagationProbability pw = pws[i];
 			icm.setPp(pw);
