@@ -26,7 +26,7 @@ public class Main {
 		double begin = System.currentTimeMillis();
 //		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
 		 String filePath = "E:/dataset/ccir2014/"+dataName+".txt";
-		 String oneLine = FileOp.readFileOneLine(filePath, "utf-8");
+		 String oneLine = FileOp.readFileOneLine(filePath);
 		 if(oneLine.contains("\t"))fenge = "\t";
 		 ReadGraph rd = new ReadGraph();
 		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,fenge);

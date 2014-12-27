@@ -39,7 +39,7 @@ public class TxtGraphData {
 			correspondMap.put(userIds[i], i);
 		}
 		System.out.println("correspondMap的大小为:"+correspondMap.size());
-//		Util.block();
+		Util.block("input a char to continue...");
 	}
 	
 	public void load(String url, String fenge, String encoding) {
@@ -61,6 +61,9 @@ public class TxtGraphData {
 	    }else{
 	        System.out.println("找不到指定的文件");
 	    }
+	    System.out.println("load finished!!!!!!!!!");
+	    System.out.println("relationship size-->"+relations.size());
+	    Util.block("input a char to continue...");
 	} catch (Exception e) {
 	    System.out.println("读取文件内容出错");
 	    e.printStackTrace();
@@ -180,7 +183,7 @@ public class TxtGraphData {
 		StringBuffer sb = new StringBuffer();
 		for (int[] is : relations) {
 			if(correspondMap.containsKey(is[0]))
-				sb.append(correspondMap.get(is[0])+" "+is[1]+"\n");
+				sb.append(correspondMap.get(is[0])+" "+correspondMap.get(is[1])+"\n");
 		}
 		AppendFile.append(url, sb.toString());
 	}

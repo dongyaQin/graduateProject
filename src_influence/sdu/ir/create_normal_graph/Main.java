@@ -11,20 +11,20 @@ public class Main {
 
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
+		String url = "/home/qinyadong/dataset/ccir2014/soc_pokec_relationships.txt";
 		TxtGraphData data = new TxtGraphData();
-//		for (int i = 0; i < 30; i++) {
-//			System.out.print("\"D:\\\\dataset\\\\finalsn\\\\part-000"+(i<10?"0"+i:i)+"\",");
-//		}
-//		FileOp.printFile("D:\\dataset\\finalsn\\mergeFile",1000);
+		data.load(url,"\t", "utf-8");
+		data.creatCorrespondMap();
+		data.write2File("/home/qinyadong/dataset/ccir2014/dealed_soc_pokec.txt");
 //		FileOp.mergeFile(ss,"D:\\dataset\\finalsn\\mergeFile");
 //		data.printUserNumbers("D:\\dataset\\finalsn\\mergeFile","\t");
-		data.readFileFast("/home/qinyadong/dataset/mergeFile","\t");
+//		data.readFileFast("/home/qinyadong/dataset/mergeFile","\t");
 //		AppendFile.append("/home/qinyadong/dataset/tempfile", "number of users==>"+number);
 //		data.load("dataset\\digRelation.txt"," ","utf-8");
 //		data.creatCorrespondMap();
 //		data.writeRelations2File("dataset\\finalDigRelation.txt");
 //		data.load("dataset\\digVotes.txt"," ","utf-8");
-//		data.write2File("dataset\\finalDigVotes.txt");
+		
 //		data.createVoteGraph("dataset\\finalDigVotes.txt", " ", "utf-8");
 	}
 

@@ -1,5 +1,7 @@
 package test;
 
+import io.FileOp;
+
 import java.util.Stack;
 
 public class Test {
@@ -88,10 +90,13 @@ public class Test {
 //		System.out.println(a+1);
 //		PropagationProbability pp = PropagationProbability.Constant;
 //		System.out.println(pp);
-		Stack<Character> s = new Stack<Character>();
-		char a = 'A'+1;
-		s.push(a);
-		System.out.println(a);
+//		Stack<Character> s = new Stack<Character>();
+//		char a = 'A'+1;
+//		s.push(a);
+//		System.out.println(a);
+//		String s = FileOp.readFileOneLine("G:\\研究僧\\数据集\\数据集\\soc_pokec_relationships.txt");
+		FileOp.printFile("G:\\研究僧\\数据集\\数据集\\soc_pokec_relationships.txt", 10);
+
 	}
 
 }

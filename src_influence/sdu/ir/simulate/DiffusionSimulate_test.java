@@ -241,7 +241,7 @@ public class DiffusionSimulate_test {
 		 file2Store = dataName+"log.txt";
 		 double begin = System.currentTimeMillis();
 		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
-		 String oneLine = FileOp.readFileOneLine(filePath, "utf-8");
+		 String oneLine = FileOp.readFileOneLine(filePath);
 		 String fenge = " ";
 		if(oneLine.contains("\t"))fenge  = "\t";
 		 ReadGraph rd = new ReadGraph();
