@@ -15,20 +15,20 @@ import test.Print;
 
 public class Simulate20000 {
 	
-	static String[] tables = new String[]{"_greedy","_tllfgreedy",
+	static String[] tables = new String[]{"_tllfgreedy",
 		"_neibornumgreedye","_degreediscountic","_random"};
 	public static void main(String[] args) throws SQLException {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stubca_HepPh1.txt
 		Data data = new Data();
-		String dataName = "emaileuall";
+		String dataName = "dealedsocpokec";
 		double begin = System.currentTimeMillis();
-		String filePath = Constant.filePathWindows+dataName+".txt";
+		String filePath = Constant.filePathLinux+dataName+".txt";
 		ReadGraph rd = new ReadGraph();
-		Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,"\t");
+		Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2," ");
 		int executions = 20000;//icm中模拟次数
 		int set = 50;//集合大小
 		double[] p = new double[]{0.1,0.05,0.01};
-		ICM3MultiThread icm3 = new ICM3MultiThread(10000,2, p[0], p[1], p[2]);
+		ICM3MultiThread icm3 = new ICM3MultiThread(10000,4, p[0], p[1], p[2]);
 		String suffix = Util.calSuffix(executions,set,p);
 		for (int i = 0; i < tables.length; i++) {
 			String tableName = "0"+dataName+tables[i]+suffix;
