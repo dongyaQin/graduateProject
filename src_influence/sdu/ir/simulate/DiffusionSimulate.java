@@ -83,7 +83,7 @@ public class DiffusionSimulate {
 		Set initSet = new HashSet();
 		for (int i = 0; i < targetSize; i++) {
 			long a=System.currentTimeMillis();
-			int max = Util.findMax(degree,0);
+			int max = Util.findMaxIndex(degree,0);
 			initSet.add(max);
 			highDegree[i] = dm.diffusion(graph, initSet);
 			database.write2Database(initSet.size(),highDegree[i],initSet, dataName+"_highDegree"+suffix);

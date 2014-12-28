@@ -185,7 +185,7 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 		Set initSet = new HashSet();
 		for (int i = 0; i < 30; i++) {
 			long a=System.currentTimeMillis();
-			int max = Util.findMax(degree,0);
+			int max = Util.findMaxIndex(degree,0);
 			set.add(max);
 			icm.diffusion(graph, set);
 			double[] t = icm.getRecord();

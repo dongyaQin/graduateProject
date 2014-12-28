@@ -129,16 +129,16 @@ public class Data {
 		String neiborNumGreedy = prefix+dataName+"_neiborNumGreedyE"+suffix;
 		String degreeDiscount = prefix+dataName+"_degreeDiscountIC"+suffix;
 		String random = prefix+dataName+"_random"+suffix;
-		this.createTable(greedy);
-		this.createTable(tllfGreedy);
-		this.createTable(neiborNumGreedy);
-		this.createTable(degreeDiscount);
-		this.createTable(random);
 		map.put(IMMethod.Greedy, greedy);
 		map.put(IMMethod.NeiborNumGreedy, neiborNumGreedy);
 		map.put(IMMethod.Random, random);
 		map.put(IMMethod.SingleDiscount, degreeDiscount);
 		map.put(IMMethod.TLLFGreedy, tllfGreedy);
+		this.createTable(greedy);
+		this.createTable(tllfGreedy);
+		this.createTable(neiborNumGreedy);
+		this.createTable(degreeDiscount);
+		this.createTable(random);
 		return 1;
 	}
 	

@@ -18,6 +18,7 @@ import sdu.ir.util.IMMethod;
 import sdu.ir.util.NodeInfluenceAbility;
 import sdu.ir.util.NodeInfluenceAbilityEfficient;
 import sdu.ir.util.Util;
+import test.Print;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 
@@ -56,6 +57,14 @@ public class DiffusionSimulate_test {
 		double last_max_gain = -1;
 		int selectedNode = -1;
 		System.out.println(beginNode+" "+selectedNode+" "+max);
+		Util.load("C:\\Users\\qyd\\Desktop\\influence.txt", record, 0);
+		int last_max_index = Util.findMaxIndex(record, 0);
+		last_max = record[last_max_index];
+		System.out.println(last_max+" "+last_max_index);
+		initSet.add(last_max_index);
+		Print.print(record);
+		
+		
 		while(initSet.size() < targetSize){
 			long a=System.currentTimeMillis();
 			for (int i = beginNode; i < graph.size(); i++) {
@@ -92,6 +101,13 @@ public class DiffusionSimulate_test {
 		return greedy;
 	}
 
+	private double[] CELFGreedy(Graph graph,DiffusionModel dm){
+		int[] traverseOrder = new int[graph.size()];
+		double[] recordInfluenceGain = new double[graph.size()];
+		
+		return null;
+	}
+	
 	//根据度值的从大到小的顺序选择节点
 	private double[] highDegree(Graph graph,DiffusionModel dm) {
 		double[] highDegree = new double[targetSize];
@@ -103,7 +119,7 @@ public class DiffusionSimulate_test {
 		Set initSet = new HashSet();
 		for (int i = 0; i < targetSize; i++) {
 			long a=System.currentTimeMillis();
-			int max = Util.findMax(degree,0);
+			int max = Util.findMaxIndex(degree,0);
 			initSet.add(max);
 			highDegree[i] = dm.diffusion(graph, initSet);
 			database.write2Database(initSet.size(),highDegree[i],initSet, dataName+"_highDegree"+suffix);
@@ -250,13 +266,13 @@ public class DiffusionSimulate_test {
 		 int executions = 20000;//icm中模拟次数
 		 int set = 50;//集合大小
 		 double[] p = new double[]{0.1,0.05,0.01};
-		 ICM3MultiThread icm3 = new ICM3MultiThread(4000,2, p[0], p[1], p[2]);
+		 ICM3MultiThread icm3 = new ICM3MultiThread(3000,2, p[0], p[1], p[2]);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm3;//选择要使用的传播模型
 
 		 suffix = Util.calSuffix(executions,set,p);
-//		 canWrite2DB  = database.createTables(dataName,"0",suffix,map);
-		 
+		 canWrite2DB  = database.createTables(dataName,"0",suffix,map);
+//		 canWrite2DB = 1;
 		 ds.recordGreedy(gh,dm,p);
 //		 ds.recordTLLFGreedy(gh,dm,p);
 //		 ds.recordSingleDiscount(gh,dm,p);

@@ -17,8 +17,20 @@ import sdu.ir.interfaces.Graph;
 
 public class Util {
 	static Scanner scan = new Scanner(System.in);
-	public static int findMax(int[] degree,int begin) {
+	public static int findMaxIndex(int[] degree,int begin) {
 		int max = degree[begin];
+		int out = begin;
+		for (int i = begin; i < degree.length; i++) {
+			if(degree[i] > max){
+				max = degree[i];
+				out = i;
+			}
+		}
+		return out;
+	}
+	
+	public static int findMaxIndex(double[] degree,int begin) {
+		double max = degree[begin];
 		int out = begin;
 		for (int i = begin; i < degree.length; i++) {
 			if(degree[i] > max){
