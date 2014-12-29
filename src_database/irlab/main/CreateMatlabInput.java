@@ -20,7 +20,7 @@ public class CreateMatlabInput {
 	static String[] dataNames = new String[]{"email2","ca_HepPh1","EmailEuAll","dealedsocpokec"};
 	public static void main(String[] args) {
 		CreateMatlabInput cmi = new CreateMatlabInput();
-		String dataName = "0"+dataNames[0];
+		String dataName = "0"+dataNames[2];
 		int executions= 20000;
 		int set = 50;
 		double[] p = new double[]{0.1,0.05,0.01};

@@ -166,11 +166,11 @@ public class ICM3_RecordDistance implements DiffusionModel{
 	public static void main(String[] args) {
 //		 String filePath = "E:\\数据集\\gh1.txt";
 //		 String filePath = "E:\\数据集\\temp.txt";
-		 String filePath = Constant.filePathWindows+"EmailEuAll.txt";
+		 String filePath = Constant.filePathWindows+"email2.txt";
 		ReadGraph rd = new ReadGraph();
 //		Graph graph1 = rd.readTxtFile2Graph(filePath, "AdjacentMatrix",2);
 //		Print.print(graph1);
-		Graph graph = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2,"\t");
+		Graph graph = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
 //		Print.print(graph);System.out.println(graph.size());
 		ICM3_RecordDistance icm = new ICM3_RecordDistance(1000,0.1,0.1,0.1);
 		Set set = new HashSet();

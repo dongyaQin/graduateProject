@@ -21,7 +21,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String dataName = "EmailEuAll";
+		String dataName = "email2";
 		String fenge = " ";
 		double begin = System.currentTimeMillis();
 //		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
@@ -46,7 +46,7 @@ public class Main {
 			 number = 1000;
 		 Util.randoms(number,0,gh.size()-1,testedSet);
 		 System.out.println(testedSet.size());
-		 double[] pps = {0.05,0.1};
+		 double[] pps = {0.01};
 		 PropagationProbability[] pws = new PropagationProbability[]{PropagationProbability.Constant};
 		 for (int i = 0; i < pws.length; i++) {
 			PropagationProbability pw = pws[i];
@@ -105,12 +105,14 @@ public class Main {
 	 * 
 	 */
 	private static void recordResult(double[] record,String fileName, int count) {
-		StringBuffer sb = new StringBuffer();
+//		StringBuffer sb = new StringBuffer();
+//		for (int i = 0; i < record.length; i++) {
+//			sb.append(record[i]/count+" ");
+//		}
+//		AppendFile.append(fileName, sb.toString());
 		for (int i = 0; i < record.length; i++) {
-			sb.append(record[i]/count+" ");
+			System.out.print(record[i]/count+" ");
 		}
-		AppendFile.append(fileName, sb.toString());
-		
 	}
 
 }

@@ -56,13 +56,13 @@ public class DiffusionSimulate_test {
 		double last_max = -1;//记录上一次影响的最大值
 		double last_max_gain = -1;
 		int selectedNode = -1;
-		System.out.println(beginNode+" "+selectedNode+" "+max);
-		Util.load("C:\\Users\\qyd\\Desktop\\influence.txt", record, 0);
-		int last_max_index = Util.findMaxIndex(record, 0);
-		last_max = record[last_max_index];
-		System.out.println(last_max+" "+last_max_index);
-		initSet.add(last_max_index);
-		Print.print(record);
+//		System.out.println(beginNode+" "+selectedNode+" "+max);
+//		Util.load("C:\\Users\\qyd\\Desktop\\influence.txt", record, 0);
+//		int last_max_index = Util.findMaxIndex(record, 0);
+//		last_max = record[last_max_index];
+//		System.out.println(last_max+" "+last_max_index);
+//		initSet.add(last_max_index);
+//		Print.print(record);
 		
 		
 		while(initSet.size() < targetSize){
