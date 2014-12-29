@@ -15,12 +15,13 @@ import test.Print;
 
 public class Simulate20000 {
 	
-	static String[] tables = new String[]{"_tllfgreedy",
-		"_neibornumgreedye","_degreediscountic","_random"};
+	static String[] tables1 = new String[]{"_tllfgreedy",
+		"_degreediscountic","_random","_neibornumgreedye"};
+	static String[] tables = new String[]{"_greedy"};
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stubca_HepPh1.txt
 		Data data = new Data();
-		String dataName = "dealedsocpokec";
+		String dataName = "ca_HepPh1";
 		double begin = System.currentTimeMillis();
 		String filePath = Constant.filePathLinux+dataName+".txt";
 		ReadGraph rd = new ReadGraph();
@@ -28,7 +29,7 @@ public class Simulate20000 {
 		int executions = 20000;//icm中模拟次数
 		int set = 50;//集合大小
 		double[] p = new double[]{0.1,0.05,0.01};
-		ICM3MultiThread icm3 = new ICM3MultiThread(10000,4, p[0], p[1], p[2]);
+		ICM3MultiThread icm3 = new ICM3MultiThread(20000,4, p[0], p[1], p[2]);
 		String suffix = Util.calSuffix(executions,set,p);
 		for (int i = 0; i < tables.length; i++) {
 			String tableName = "0"+dataName+tables[i]+suffix;
