@@ -1,5 +1,7 @@
 package sdu.ir.diffusionmodel;
 
+import io.AppendFile;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.Constant;
 import sdu.ir.util.NetProperty;
+import sdu.ir.util.Util;
 import test.Print;
 //经测试，正确！
 public class ICM3_RecordDistance implements DiffusionModel{
@@ -166,27 +169,37 @@ public class ICM3_RecordDistance implements DiffusionModel{
 	public static void main(String[] args) {
 //		 String filePath = "E:\\数据集\\gh1.txt";
 //		 String filePath = "E:\\数据集\\temp.txt";
-		 String filePath = Constant.filePathWindows+"email2.txt";
+
+		String newFileName = "ca_HepPh1";
+		String filePath = Constant.filePathWindows+newFileName+".txt";
 		ReadGraph rd = new ReadGraph();
-//		Graph graph1 = rd.readTxtFile2Graph(filePath, "AdjacentMatrix",2);
-//		Print.print(graph1);
-		Graph graph = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
-//		Print.print(graph);System.out.println(graph.size());
-		ICM3_RecordDistance icm = new ICM3_RecordDistance(1000,0.1,0.1,0.1);
-		Set set = new HashSet();
-		for (int i = 100; i < 200; i++) {
-			set.add(i);
-			icm.diffusion(graph, set);
-			NetProperty net = new NetProperty(graph);
-			double[] records = icm.getRecords();
-			for (int j = 0; j < records.length; j++) {
-				System.out.print(records[j]/1000+" ");
-			}
-			System.out.println();
-			set.remove(i);
+		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
+		int executions = 2000;
+		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.1,0.05,0.01);
+		Set<Integer> seedSet = new HashSet<Integer>();
+		Set<Integer> testedSet = new HashSet<Integer>();
+		int number = gh.size();
+		if(gh.size()>1000)
+			 number = 1000;
+		Util.randoms(number,0,gh.size()-1,testedSet);
+		for (Integer in : testedSet) {
+			System.out.println(newFileName+"-node-"+in);
+			seedSet.add(in);
+			icm.diffusion(gh, seedSet);
+			recordResult(icm.getRecords(),newFileName+".txt",executions);
+			seedSet.remove(in);
 		}
 		
 //		System.out.println(net.getNumOfDistance(1123, 10));
 	}
+	
+	private static void recordResult(double[] record,String fileName, int count) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < record.length; i++) {
+			sb.append(record[i]/count+" ");
+		}
+		AppendFile.append(fileName, sb.toString());
+	}
+
 
 }
