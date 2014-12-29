@@ -2,6 +2,8 @@ package sdu.ir.diffusionmodel;
 
 import io.AppendFile;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -175,13 +177,20 @@ public class ICM3_RecordDistance implements DiffusionModel{
 		ReadGraph rd = new ReadGraph();
 		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
 		int executions = 2000;
-		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.1,0.05,0.01);
+		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.1,0.01,0.001);
 		Set<Integer> seedSet = new HashSet<Integer>();
 		Set<Integer> testedSet = new HashSet<Integer>();
 		int number = gh.size();
 		if(gh.size()>1000)
 			 number = 1000;
-		Util.randoms(number,0,gh.size()-1,testedSet);
+//		Util.randoms(number,0,gh.size()-1,testedSet);
+		int[][] outdegrees = getOutDegrees(gh);
+		int j = 0;
+		for (int i = outdegrees.length-1; i > 0 ; i=i-2) {
+			testedSet.add(outdegrees[i][1]);
+			j ++;
+			if(j == 10)break;
+		}
 		for (Integer in : testedSet) {
 			System.out.println(newFileName+"-node-"+in);
 			seedSet.add(in);
@@ -191,6 +200,26 @@ public class ICM3_RecordDistance implements DiffusionModel{
 		}
 		
 //		System.out.println(net.getNumOfDistance(1123, 10));
+	}
+	
+	private static int[][] getOutDegrees(Graph graph) {
+		int[][] degree = new int[graph.size()][2];
+		for (int i = 0; i < graph.size(); i++) {
+			degree[i][0] = graph.getOutdegree(i);
+			degree[i][1] = i;
+		}
+		Arrays.sort(degree, new Comparator<int[]>() {
+
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				if(o1[0]<o2[0])
+					return -1;
+				if(o1[0]>o2[0])
+					return 1;
+				return 0;
+			}
+		});
+		return degree;
 	}
 	
 	private static void recordResult(double[] record,String fileName, int count) {
