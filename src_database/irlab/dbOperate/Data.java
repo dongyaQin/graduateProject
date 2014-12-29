@@ -165,7 +165,7 @@ public class Data {
 		String sql = "select k,influence from "+tableName+" order by k asc ";
 		ResultSet rs = DAOSupport.executeQuery(sql);
 		ArrayList<Double> list = new ArrayList<Double>();
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer("");
 		try {
 			while (rs.next()) {
 				double temp = (Double) rs.getObject("influence");

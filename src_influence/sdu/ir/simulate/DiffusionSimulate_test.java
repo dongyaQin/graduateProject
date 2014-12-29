@@ -254,7 +254,7 @@ public class DiffusionSimulate_test {
 	}
 	
 	public static void main(String[] args) throws MWException {
-		 dataName = "ca_hepph1";
+		 dataName = "dealedsocpokec";
 		 file2Store = dataName+"log.txt";
 		 double begin = System.currentTimeMillis();
 		 String filePath = Constant.filePathWindows+dataName+".txt";

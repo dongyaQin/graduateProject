@@ -15,18 +15,19 @@ public class CreateMatlabInput {
 	 */
 //	static String[] tables = new String[]{"_nWtNumGEfficient",
 //			"_nWtNumGEfficientcelf","_degreeDiscountIC","_random"};
-	static String[] tables = new String[]{"_greedy","_nWtNumGEfficient","_nWtNumGEfficientcelf",
-		"_degreeDiscountIC","_random"};
+	static String[] tables = new String[]{"_greedy","_tllfgreedy",
+		"_neibornumgreedye","_degreediscountic","_random"};
+	static String[] dataNames = new String[]{"email2","ca_HepPh1","EmailEuAll","dealedsocpokec"};
 	public static void main(String[] args) {
 		CreateMatlabInput cmi = new CreateMatlabInput();
-		String dataName = "20000ca_HepPh1";
-		int executions= 4000;
+		String dataName = "0"+dataNames[0];
+		int executions= 20000;
 		int set = 50;
-		double[] p = new double[]{0.5,0.3,0.1};
+		double[] p = new double[]{0.1,0.05,0.01};
 
 		
-//		cmi.createCompareMatalabInput(dataName,executions,set,p);
-		System.out.println(100*cmi.getDifference(dataName,executions,set,p)+"%");
+		cmi.createCompareMatalabInput(dataName,executions,set,p);
+//		System.out.println(100*cmi.getDifference(dataName,executions,set,p)+"%");
 	}
 
 	private double getDifference(String dataName, int executions, int set, double[] p) {
@@ -71,6 +72,7 @@ public class CreateMatlabInput {
 	private void create_matlab_drawing_input(String tableName, String url) {
 		Data data = new Data();
 		String content = data.getMatalabContent(tableName);
+		if(content.equals(""))return;
 		AppendFile.append(url, content);
 	}
 
