@@ -169,12 +169,11 @@ public class ICM3_RecordDistance implements DiffusionModel{
 	public static void main(String[] args) {
 //		 String filePath = "E:\\数据集\\gh1.txt";
 //		 String filePath = "E:\\数据集\\temp.txt";
-
-		String newFileName = "ca_HepPh1";
-		String filePath = Constant.filePathWindows+newFileName+".txt";
+		String newFileName = "dealedsocpokec";
+		String filePath = Constant.filePathLinux+newFileName+".txt";
 		ReadGraph rd = new ReadGraph();
 		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
-		int executions = 2000;
+		int executions = 10000;
 		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.1,0.05,0.01);
 		Set<Integer> seedSet = new HashSet<Integer>();
 		Set<Integer> testedSet = new HashSet<Integer>();
@@ -186,7 +185,7 @@ public class ICM3_RecordDistance implements DiffusionModel{
 			System.out.println(newFileName+"-node-"+in);
 			seedSet.add(in);
 			icm.diffusion(gh, seedSet);
-			recordResult(icm.getRecords(),newFileName+".txt",executions);
+			recordResult(icm.getRecords(),newFileName+"icm3.txt",executions);
 			seedSet.remove(in);
 		}
 		
