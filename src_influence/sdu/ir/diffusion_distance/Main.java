@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Stack;
 
 import sdu.ir.diffusionmodel.IndependentCascadeModel_RecordDistance;
 import sdu.ir.input.ReadGraph;
@@ -17,7 +16,6 @@ import sdu.ir.simulate.DiffusionSimulate_test;
 import sdu.ir.util.Constant;
 import sdu.ir.util.PropagationProbability;
 import sdu.ir.util.Util;
-import test.Print;
 
 public class Main {
 
@@ -38,7 +36,7 @@ public class Main {
 //		 Util.block();
 		 int executions = 2000;//icm中模拟次数
 		 int set = 50;//集合大小
-		
+
 		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.01, PropagationProbability.Constant);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm;//选择要使用的传播模型
