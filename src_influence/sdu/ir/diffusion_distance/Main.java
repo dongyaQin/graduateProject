@@ -14,6 +14,7 @@ import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.simulate.DiffusionSimulate_test;
+import sdu.ir.util.Constant;
 import sdu.ir.util.PropagationProbability;
 import sdu.ir.util.Util;
 import test.Print;
@@ -24,21 +25,21 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String dataName = "email2";
+		String dataName = "dealedsocpokec";
 		String fenge = " ";
 		double begin = System.currentTimeMillis();
 //		 String filePath = "/home/qinyadong/dataset/ccir2014/"+dataName+".txt";
-		 String filePath = "E:/dataset/ccir2014/"+dataName+".txt";
+		 String filePath = Constant.filePathLinux+dataName+".txt";
 		 String oneLine = FileOp.readFileOneLine(filePath);
 		 if(oneLine.contains("\t"))fenge = "\t";
 		 ReadGraph rd = new ReadGraph();
 		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,fenge);
 //		 Print.print(gh);
 //		 Util.block();
-		 int executions = 10000;//icm中模拟次数
+		 int executions = 2000;//icm中模拟次数
 		 int set = 50;//集合大小
 		
-		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.05, PropagationProbability.Constant);
+		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.01, PropagationProbability.Constant);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm;//选择要使用的传播模型
 		 int[][] outdegrees = getOutDegrees(gh);
