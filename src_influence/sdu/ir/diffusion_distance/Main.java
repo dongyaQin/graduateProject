@@ -3,6 +3,8 @@ package sdu.ir.diffusion_distance;
 import io.AppendFile;
 import io.FileOp;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -14,6 +16,7 @@ import sdu.ir.interfaces.Graph;
 import sdu.ir.simulate.DiffusionSimulate_test;
 import sdu.ir.util.PropagationProbability;
 import sdu.ir.util.Util;
+import test.Print;
 
 public class Main {
 
@@ -38,13 +41,16 @@ public class Main {
 		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.05, PropagationProbability.Constant);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm;//选择要使用的传播模型
-		 
+		 int[][] outdegrees = getOutDegrees(gh);
+		 System.out.println("max degree-->"+outdegrees[gh.size()-1][0]);
+		 Util.block();
 		 Set<Integer> seedSet = new HashSet<Integer>();
 		 Set<Integer> testedSet = new HashSet<Integer>();
 		 int number = gh.size();
 		 if(gh.size()>1000)
 			 number = 1000;
 		 Util.randoms(number,0,gh.size()-1,testedSet);
+		 testedSet.add(outdegrees[gh.size()-1][1]);
 		 System.out.println(testedSet.size());
 		 double[] pps = {0.01};
 		 PropagationProbability[] pws = new PropagationProbability[]{PropagationProbability.Constant};
@@ -83,6 +89,30 @@ public class Main {
 	}
 
 	/**
+	 * @param gh
+	 * @return
+	 */
+	private static int[][] getOutDegrees(Graph graph) {
+		int[][] degree = new int[graph.size()][2];
+		for (int i = 0; i < graph.size(); i++) {
+			degree[i][0] = graph.getOutdegree(i);
+			degree[i][1] = i;
+		}
+		Arrays.sort(degree, new Comparator<int[]>() {
+
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				if(o1[0]<o2[0])
+					return -1;
+				if(o1[0]>o2[0])
+					return 1;
+				return 0;
+			}
+		});
+		return degree;
+	}
+
+	/**
 	 * @param dataName
 	 * @param pw
 	 * @param pp
@@ -105,14 +135,11 @@ public class Main {
 	 * 
 	 */
 	private static void recordResult(double[] record,String fileName, int count) {
-//		StringBuffer sb = new StringBuffer();
-//		for (int i = 0; i < record.length; i++) {
-//			sb.append(record[i]/count+" ");
-//		}
-//		AppendFile.append(fileName, sb.toString());
+		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < record.length; i++) {
-			System.out.print(record[i]/count+" ");
+			sb.append(record[i]/count+" ");
 		}
+		AppendFile.append(fileName, sb.toString());
 	}
 
 }
