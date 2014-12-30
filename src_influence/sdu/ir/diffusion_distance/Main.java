@@ -42,6 +42,12 @@ public class Main {
 		 DiffusionModel dm = icm;//选择要使用的传播模型
 		 int[][] outdegrees = getOutDegrees(gh);
 		 System.out.println("max degree-->"+outdegrees[gh.size()-1][0]);
+		 int jj = 0;
+		 for (int i = outdegrees.length-1; i > 0 ; i--) {
+			 System.out.print(outdegrees[i][0]+" ");
+			 jj ++;
+			 if(jj==100)break;
+		 }
 		 Util.block();
 		 Set<Integer> seedSet = new HashSet<Integer>();
 		 Set<Integer> testedSet = new HashSet<Integer>();
