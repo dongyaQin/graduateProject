@@ -1,15 +1,7 @@
 package sdu.ir.simulate;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
-
-import sdu.ir.diffusionmodel.ICM3MultiThread;
-import sdu.ir.input.ReadGraph;
-import sdu.ir.interfaces.Graph;
-import sdu.ir.util.NetProperty;
-import sdu.ir.util.Util;
-import test.Print;
 
 public class Test {
 
@@ -48,19 +40,26 @@ public class Test {
 //			else
 //				System.out.print("'',");
 //		}
-		int[] a = new int[]{136, 548, 9, 133, 13, 15, 134, 395, 563, 20, 23, 22, 307, 40, 41, 51, 48, 426, 428, 57, 182, 68, 611, 71, 340, 203, 197, 72, 467, 195, 75, 459, 218, 321, 92, 332, 331, 577, 236, 232, 589, 104, 105, 119, 597, 353, 354, 355, 240, 482};
-		int[] b = new int[]{136, 548, 9, 133, 13, 15, 134, 395, 563, 20, 23, 22, 307, 40, 41, 51, 426, 428, 57, 182, 68, 204, 611, 71, 340, 203, 197, 72, 467, 195, 75, 459, 218, 92, 332, 331, 756, 577, 236, 232, 503, 589, 104, 105, 597, 353, 354, 355, 240, 482};
-		Arrays.sort(a);
-		Arrays.sort(b);
-		Print.print(a);
-		Print.print(b);
-		for (int i = 0; i < b.length; i++) {
-			if(a[i] != b[i]){
-				System.out.println(false);
-				return;
-			}
+//		int[] a = new int[]{136, 548, 9, 133, 13, 15, 134, 395, 563, 20, 23, 22, 307, 40, 41, 51, 48, 426, 428, 57, 182, 68, 611, 71, 340, 203, 197, 72, 467, 195, 75, 459, 218, 321, 92, 332, 331, 577, 236, 232, 589, 104, 105, 119, 597, 353, 354, 355, 240, 482};
+//		int[] b = new int[]{136, 548, 9, 133, 13, 15, 134, 395, 563, 20, 23, 22, 307, 40, 41, 51, 426, 428, 57, 182, 68, 204, 611, 71, 340, 203, 197, 72, 467, 195, 75, 459, 218, 92, 332, 331, 756, 577, 236, 232, 503, 589, 104, 105, 597, 353, 354, 355, 240, 482};
+//		Arrays.sort(a);
+//		Arrays.sort(b);
+//		Print.print(a);
+//		Print.print(b);
+//		for (int i = 0; i < b.length; i++) {
+//			if(a[i] != b[i]){
+//				System.out.println(false);
+//				return;
+//			}
+//		}
+//		System.out.println(true);
+		Set<Integer> set = new LinkedHashSet<Integer>();
+		for (int i = 0; i < 100; i++) {
+			set.add(i);
 		}
-		System.out.println(true);
+		for (Integer integer : set) {
+			System.out.println(integer);
+		}
 	}
 
 }

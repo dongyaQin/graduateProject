@@ -187,9 +187,9 @@ public class Util {
 		}
 		
 	}
-	public static String calSuffix(int executions, int set, double[] p) {
+	public static String calSuffix(int executions, int setSize, double[] p) {
 		StringBuffer suffix = new StringBuffer("");
-		suffix.append("_"+executions+"_"+set);
+		suffix.append("_"+executions+"_"+setSize);
 		for (int i = 0; i < p.length; i++) {
 			suffix.append("_"+(int)(p[i]*100));
 		}
