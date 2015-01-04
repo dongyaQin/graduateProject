@@ -174,9 +174,10 @@ public class ICM3_RecordDistance implements DiffusionModel{
 		String newFileName = "EmailEuAll";
 		String filePath = Constant.filePathWindows+newFileName+".txt";
 		ReadGraph rd = new ReadGraph();
-		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2,"\t");
-		int executions = 2000;
-		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.3,0.01,0.005);
+		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
+		int executions = 8000;
+		double p1 = 0.15;
+		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,p1,0.01,0.005);
 		Set<Integer> seedSet = new HashSet<Integer>();
 		Set<Integer> testedSet = new HashSet<Integer>();
 		int number = gh.size();
@@ -196,6 +197,7 @@ public class ICM3_RecordDistance implements DiffusionModel{
 			double a = icm.diffusion(gh, seedSet);
 			System.out.println(in+"-->"+a);
 			recordResult(icm.getRecords(),newFileName+"0.3icm3.txt",executions);
+
 			seedSet.remove(in);
 		}
 		

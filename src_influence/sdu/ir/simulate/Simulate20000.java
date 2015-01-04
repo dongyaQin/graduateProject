@@ -17,7 +17,7 @@ public class Simulate20000 {
 	
 	static String[] tables1 = new String[]{"_tllfgreedy",
 		"_degreediscountic","_random","_neibornumgreedye"};
-	static String[] tables = new String[]{"_neibornumgreedye"};
+	static String[] tables = new String[]{"_degreediscountic"};
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stubca_HepPh1.txt
 		Data data = new Data();
@@ -38,7 +38,7 @@ public class Simulate20000 {
 //			for (int j = 0; j < list.size(); j++) {
 //				System.out.println(list.get(j));
 //			}
-			for (int j = 0; j < list.size(); j++) {
+			for (int j = 45; j > 40; j--) {
 				Set<Integer> set1 = list.get(j);
 				double temp = icm3.diffusion(gh, set1);
 				System.out.println(set1.size()+"--->"+temp);
