@@ -34,28 +34,31 @@ public class Main {
 		 Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,fenge);
 //		 Print.print(gh);
 //		 Util.block();
-		 int executions = 2000;//icm中模拟次数
+		 int executions = 8000;//icm中模拟次数
 		 int set = 50;//集合大小
 
 		 IndependentCascadeModel_RecordDistance icm = new IndependentCascadeModel_RecordDistance(executions,0.01, PropagationProbability.Constant);
 		 DiffusionSimulate_test ds = new DiffusionSimulate_test(set);//参数为初始集合大小
 		 DiffusionModel dm = icm;//选择要使用的传播模型
+		 int number = gh.size();
+		 Set<Integer> seedSet = new HashSet<Integer>();
+		 Set<Integer> testedSet = new HashSet<Integer>();
 		 int[][] outdegrees = getOutDegrees(gh);
-		 System.out.println("max degree-->"+outdegrees[gh.size()-1][0]);
+//		 System.out.println("max degree-->"+outdegrees[gh.size()-1][0]);
+//
+
+
+		 if(gh.size()>1000)
+			 number = 1000;
 		 int jj = 0;
 		 for (int i = outdegrees.length-1; i > 0 ; i--) {
+			 testedSet.add(i);
 			 System.out.print(outdegrees[i][0]+" ");
 			 jj ++;
 			 if(jj==100)break;
 		 }
-		 Util.block();
-		 Set<Integer> seedSet = new HashSet<Integer>();
-		 Set<Integer> testedSet = new HashSet<Integer>();
-		 int number = gh.size();
-		 if(gh.size()>1000)
-			 number = 1000;
-		 Util.randoms(number,0,gh.size()-1,testedSet);
-		 testedSet.add(outdegrees[gh.size()-1][1]);
+//		 Util.randoms(number,0,gh.size()-1,testedSet);
+//		 testedSet.add(outdegrees[gh.size()-1][1]);
 		 System.out.println(testedSet.size());
 		 double[] pps = {0.01};
 		 PropagationProbability[] pws = new PropagationProbability[]{PropagationProbability.Constant};

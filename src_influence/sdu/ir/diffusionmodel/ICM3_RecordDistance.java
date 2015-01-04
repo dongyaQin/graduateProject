@@ -176,7 +176,8 @@ public class ICM3_RecordDistance implements DiffusionModel{
 		ReadGraph rd = new ReadGraph();
 		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
 		int executions = 8000;
-		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.1,0.01,0.005);
+		double p1 = 0.15;
+		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,p1,0.01,0.005);
 		Set<Integer> seedSet = new HashSet<Integer>();
 		Set<Integer> testedSet = new HashSet<Integer>();
 		int number = gh.size();
@@ -194,7 +195,7 @@ public class ICM3_RecordDistance implements DiffusionModel{
 			System.out.println(newFileName+"-node-"+in);
 			seedSet.add(in);
 			icm.diffusion(gh, seedSet);
-			recordResult(icm.getRecords(),newFileName+"icm3.txt",executions);
+			recordResult(icm.getRecords(),newFileName+p1+"icm3.txt",executions);
 			seedSet.remove(in);
 		}
 		
