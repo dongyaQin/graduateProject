@@ -43,53 +43,28 @@ public class Main {
 		 int number = gh.size();
 		 Set<Integer> seedSet = new HashSet<Integer>();
 		 Set<Integer> testedSet = new HashSet<Integer>();
-		 int[][] outdegrees = getOutDegrees(gh);
-//		 System.out.println("max degree-->"+outdegrees[gh.size()-1][0]);
-//
-
-
-		 if(gh.size()>1000)
-			 number = 1000;
-		 int jj = 0;
-		 for (int i = outdegrees.length-1; i > 0 ; i--) {
-			 testedSet.add(i);
-			 System.out.print(outdegrees[i][0]+" ");
-			 jj ++;
-			 if(jj==100)break;
-		 }
 //		 Util.randoms(number,0,gh.size()-1,testedSet);
 //		 testedSet.add(outdegrees[gh.size()-1][1]);
-		 System.out.println(testedSet.size());
-		 double[] pps = {0.01};
-		 PropagationProbability[] pws = new PropagationProbability[]{PropagationProbability.Constant};
-		 for (int i = 0; i < pws.length; i++) {
-			PropagationProbability pw = pws[i];
-			icm.setPp(pw);
-			if(pw == PropagationProbability.Constant){
-				for (int j = 0; j < pps.length; j++) {
-					double pp = pps[j];
-					icm.setDiffusionProbability(pp);
-					String newFileName = getFileName(dataName,pw,pp);
-					for (Integer in : testedSet) {
-						System.out.println(newFileName+"-node-"+in);
-						seedSet.add(in);
-						icm.diffusion(gh, seedSet);
-						recordResult(icm.getRecord(),newFileName,executions);
-						seedSet.remove(in);
-					}
-				}
-			}else{
-				String newFileName = getFileName(dataName,pw,0);
-				for (Integer in : testedSet) {
-					System.out.println(newFileName+"-node-"+in);
-					seedSet.add(in);
-					icm.diffusion(gh, seedSet);
-					recordResult(icm.getRecord(),newFileName,executions);
-					seedSet.remove(in);
-				}
-			}
-
+		 int[][] outdegrees = getOutDegrees(gh);
+		int j = 0;
+		for (int i = outdegrees.length-1; i > 0 ; i--) {
+			System.out.println(outdegrees[i][0]+" "+outdegrees[i][1]);
+			testedSet.add(outdegrees[i][1]);
+			j ++;
+			if(j == 1000)break;
 		}
+		icm.setPp(PropagationProbability.Constant);
+		double[] ps = new double[]{0.01,0.02,0.03};
+		for (int i = 0; i < ps.length; i++) {
+			icm.setDiffusionProbability(ps[i]);
+			for (Integer in : testedSet) {
+				seedSet.add(in);
+				icm.diffusion(gh, seedSet);
+				recordResult(icm.getRecord(),dataName+ps[i],executions);
+				seedSet.remove(in);
+			}
+		}
+		
 		 
 		 System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
 	

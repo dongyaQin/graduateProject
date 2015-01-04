@@ -53,13 +53,17 @@ public class Test {
 //			}
 //		}
 //		System.out.println(true);
-		Set<Integer> set = new LinkedHashSet<Integer>();
-		for (int i = 0; i < 100; i++) {
-			set.add(i);
-		}
-		for (Integer integer : set) {
-			System.out.println(integer);
-		}
+//		Set<Integer> set = new LinkedHashSet<Integer>();
+//		for (int i = 0; i < 100; i++) {
+//			set.add(i);
+//		}
+//		for (Integer integer : set) {
+//			System.out.println(integer);
+//		}
+		long a=0;
+		int b=0;
+		System.out.println(a==b);
+		System.out.println(Math.sqrt(2147395599));
 	}
 
 }
