@@ -171,12 +171,12 @@ public class ICM3_RecordDistance implements DiffusionModel{
 	public static void main(String[] args) {
 //		 String filePath = "E:\\数据集\\gh1.txt";
 //		 String filePath = "E:\\数据集\\temp.txt";
-		String newFileName = "dealedsocpokec";
-		String filePath = Constant.filePathLinux+newFileName+".txt";
+		String newFileName = "EmailEuAll";
+		String filePath = Constant.filePathWindows+newFileName+".txt";
 		ReadGraph rd = new ReadGraph();
-		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
-		int executions = 8000;
-		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.1,0.01,0.005);
+		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2,"\t");
+		int executions = 2000;
+		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,0.3,0.01,0.005);
 		Set<Integer> seedSet = new HashSet<Integer>();
 		Set<Integer> testedSet = new HashSet<Integer>();
 		int number = gh.size();
@@ -186,15 +186,16 @@ public class ICM3_RecordDistance implements DiffusionModel{
 		int[][] outdegrees = getOutDegrees(gh);
 		int j = 0;
 		for (int i = outdegrees.length-1; i > 0 ; i--) {
+			System.out.println(outdegrees[i][0]+" "+outdegrees[i][1]);
 			testedSet.add(outdegrees[i][1]);
 			j ++;
 			if(j == 1000)break;
 		}
 		for (Integer in : testedSet) {
-			System.out.println(newFileName+"-node-"+in);
 			seedSet.add(in);
-			icm.diffusion(gh, seedSet);
-			recordResult(icm.getRecords(),newFileName+"icm3.txt",executions);
+			double a = icm.diffusion(gh, seedSet);
+			System.out.println(in+"-->"+a);
+			recordResult(icm.getRecords(),newFileName+"0.3icm3.txt",executions);
 			seedSet.remove(in);
 		}
 		
