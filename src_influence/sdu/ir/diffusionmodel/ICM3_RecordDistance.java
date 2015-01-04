@@ -5,15 +5,14 @@ import io.AppendFile;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.DiffusionModel;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.Constant;
-import sdu.ir.util.NetProperty;
 import sdu.ir.util.Util;
-import test.Print;
 //经测试，正确！
 public class ICM3_RecordDistance implements DiffusionModel{
 	private double p1 = 0.5;//感染邻居的概率
@@ -171,19 +170,16 @@ public class ICM3_RecordDistance implements DiffusionModel{
 	public static void main(String[] args) {
 //		 String filePath = "E:\\数据集\\gh1.txt";
 //		 String filePath = "E:\\数据集\\temp.txt";
-		String newFileName = "EmailEuAll";
+		//dealedsocpokec
+		String newFileName = "dealedsocpokec";
 		String filePath = Constant.filePathWindows+newFileName+".txt";
 		ReadGraph rd = new ReadGraph();
 		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
 		int executions = 8000;
-		double p1 = 0.15;
-		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,p1,0.01,0.005);
+		double[] ps = new double[]{0.1,0.01,0.001};
+		ICM3_RecordDistance icm = new ICM3_RecordDistance(executions,ps[0],ps[1],ps[2]);
 		Set<Integer> seedSet = new HashSet<Integer>();
-		Set<Integer> testedSet = new HashSet<Integer>();
-		int number = gh.size();
-		if(gh.size()>1000)
-			 number = 1000;
-//		Util.randoms(number,0,gh.size()-1,testedSet);
+		Set<Integer> testedSet = new LinkedHashSet<Integer>();
 		int[][] outdegrees = getOutDegrees(gh);
 		int j = 0;
 		for (int i = outdegrees.length-1; i > 0 ; i--) {
@@ -196,8 +192,8 @@ public class ICM3_RecordDistance implements DiffusionModel{
 			seedSet.add(in);
 			double a = icm.diffusion(gh, seedSet);
 			System.out.println(in+"-->"+a);
-			recordResult(icm.getRecords(),newFileName+"0.3icm3.txt",executions);
-
+			String suffix = Util.calSuffix(executions, seedSet.size(), ps);
+			recordResult(icm.getRecords(),newFileName+suffix,executions);
 			seedSet.remove(in);
 		}
 		
