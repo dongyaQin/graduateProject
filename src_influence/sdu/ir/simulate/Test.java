@@ -1,7 +1,10 @@
 package sdu.ir.simulate;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Test {
 
@@ -60,6 +63,16 @@ public class Test {
 //		for (Integer integer : set) {
 //			System.out.println(integer);
 //		}
+		Double d1 = new Double(0);
+		Double d2 = new Double(-0);
+		double d11 = 0;
+		double d22 = -0;
+		System.out.println(d11==d22);
+		System.out.println(d1.equals(d2));
+//		Collections.reverse(null);
+		List<Integer> list = new ArrayList<Integer>();
+		Map m = new HashMap();
+		list.remove(list.size()-1);
 		long a=0;
 		int b=0;
 		System.out.println(a==b);
