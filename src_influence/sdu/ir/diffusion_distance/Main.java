@@ -54,7 +54,7 @@ public class Main {
 			if(j == 1000)break;
 		}
 		icm.setPp(PropagationProbability.Constant);
-		double[] ps = new double[]{0.01,0.02,0.03};
+		double[] ps = new double[]{0.015};
 		for (int i = 0; i < ps.length; i++) {
 			icm.setDiffusionProbability(ps[i]);
 			for (Integer in : testedSet) {
