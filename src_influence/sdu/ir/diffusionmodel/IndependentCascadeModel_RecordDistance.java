@@ -27,7 +27,7 @@ public class IndependentCascadeModel_RecordDistance implements DiffusionModel{
 		index 2:sum of number of nodes infected;
 		others:number of nodes infected at step i+1
 	*/
-	private double[] record = new double[100];
+	private double[] record = new double[1000];
 	//count是指模拟多少次，因为ICM模型下每次结果不一样，所以需要试验多次以使得结果更准确
 	public IndependentCascadeModel_RecordDistance(int count,double p,PropagationProbability pp) {
 		this.count = count;

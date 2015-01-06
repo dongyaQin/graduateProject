@@ -172,7 +172,7 @@ public class ICM3_RecordDistance implements DiffusionModel{
 //		 String filePath = "E:\\Êý¾Ý¼¯\\temp.txt";
 		//dealedsocpokec
 		String newFileName = "dealedsocpokec";
-		String filePath = Constant.filePathWindows+newFileName+".txt";
+		String filePath = Constant.filePathLinux+newFileName+".txt";
 		ReadGraph rd = new ReadGraph();
 		Graph gh = rd.readTxtFile2Graph(filePath, "AdjacentListwithoutweight",2," ");
 		int executions = 8000;
