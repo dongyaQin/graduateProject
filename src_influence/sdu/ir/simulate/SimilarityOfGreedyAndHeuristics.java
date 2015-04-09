@@ -19,12 +19,12 @@ public class SimilarityOfGreedyAndHeuristics {
 	public static void main(String[] args) {
 		
 		SimilarityOfGreedyAndHeuristics s = new SimilarityOfGreedyAndHeuristics();
-		dataName = "EmailEuAll";
+		dataName = "email2";
 		double begin = System.currentTimeMillis();
-		String filePath = "ccir2014\\"+dataName+".txt";
+		String filePath = "E:\\dataset\\ccir2014\\"+dataName+".txt";
 		ReadGraph rd = new ReadGraph();
-		Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2,"\t");
-		double[] p = new double[]{0.3,0.1,0.01};
+		Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2," ");
+		double[] p = new double[]{0.1,0.05,0.01};
 //		database.createTables(dataName);
 		s.begin(gh,50,p);
 		System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
@@ -35,7 +35,7 @@ public class SimilarityOfGreedyAndHeuristics {
 		
 		double[] greedy = new double[k];
 		double[] lbm = new double[k];
-		double[] ubm = new double[k];
+//		double[] ubm = new double[k];
 		ICM3MultiThread icm3 = new ICM3MultiThread(20000,1, p[0], p[1], p[2]);
 		NodeInfluenceAbility nb = new NodeInfluenceAbility(g, k);
 		double time_greedy = 0;
@@ -56,19 +56,19 @@ public class SimilarityOfGreedyAndHeuristics {
 			System.out.println("lbm"+(d-c)/1000);
 //			database.write2Database(set.size(),lbm[i],set, dataName+"_lbm");
 			time_lbm += d-c;
-			double e = System.currentTimeMillis();
-			ubm[i] = nb.influenceSimulate(set, new double[]{1,1,1});
-			double f = System.currentTimeMillis();
-			System.out.println("ubm"+(f-e)/1000);
+//			double e = System.currentTimeMillis();
+//			ubm[i] = nb.influenceSimulate(set, new double[]{1,1,1});
+//			double f = System.currentTimeMillis();
+//			System.out.println("ubm"+(f-e)/1000);
 //			database.write2Database(set.size(),ubm[i],set, dataName+"_ubm");
-			time_ubm += f-e;
+//			time_ubm += f-e;
 		}
 		Print.print(greedy);
 		Print.print(lbm);
-		Print.print(ubm);
+//		Print.print(ubm);
 		System.out.println("greedy total time->"+time_greedy);
 		System.out.println("lbm total time->"+time_lbm);
-		System.out.println("ubm total time->"+time_ubm);
+//		System.out.println("ubm total time->"+time_ubm);
 	}
 
 }

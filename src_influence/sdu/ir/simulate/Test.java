@@ -63,20 +63,28 @@ public class Test {
 //		for (Integer integer : set) {
 //			System.out.println(integer);
 //		}
-		Double d1 = new Double(0);
-		Double d2 = new Double(-0);
-		double d11 = 0;
-		double d22 = -0;
-		System.out.println(d11==d22);
-		System.out.println(d1.equals(d2));
+//		StringBuffer sb = new StringBuffer("");
+//		System.out.println(Math.abs(-8));
+//		String s = "123.456";
+//		System.out.println(s.indexOf("."));
+//		Double d1 = new Double(0);
+//		Double d2 = new Double(-0);
+//		double d11 = 0;
+//		double d22 = -0;
+//		System.out.println(d11==d22);
+//		System.out.println(d1.equals(d2));
 //		Collections.reverse(null);
-		List<Integer> list = new ArrayList<Integer>();
-		Map m = new HashMap();
-		list.remove(list.size()-1);
-		long a=0;
-		int b=0;
-		System.out.println(a==b);
-		System.out.println(Math.sqrt(2147395599));
+//		List<Integer> list = new ArrayList<Integer>();
+//		Map m = new HashMap();
+//		list.remove(list.size()-1);
+//		long a=0;
+//		int b=0;
+//		System.out.println(a==b);
+//		System.out.println(Math.sqrt(2147395599));
+		char a = '9';
+		char b = '3';
+		int c = a+b;
+		System.out.println(a-b);
 	}
 
 }

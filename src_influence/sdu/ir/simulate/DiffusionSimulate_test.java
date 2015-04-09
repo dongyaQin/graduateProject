@@ -271,7 +271,7 @@ public class DiffusionSimulate_test {
 		 DiffusionModel dm = icm3;//选择要使用的传播模型
 
 		 suffix = Util.calSuffix(executions,set,p);
-		 canWrite2DB  = database.createTables(dataName,"0",suffix,map);
+		 canWrite2DB = database.createTables(dataName,"0",suffix,map);
 //		 canWrite2DB = 1;
 		 ds.recordGreedy(gh,dm,p);
 //		 ds.recordTLLFGreedy(gh,dm,p);
