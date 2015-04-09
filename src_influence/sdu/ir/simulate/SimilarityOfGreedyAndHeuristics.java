@@ -64,7 +64,7 @@ public class SimilarityOfGreedyAndHeuristics {
 //			time_ubm += f-e;
 		}
 		Print.print(greedy);
-		Print.print(lbm); 
+		Print.print(lbm);  
 //		Print.print(ubm);
 		System.out.println("greedy total time->"+time_greedy);
 		System.out.println("lbm total time->"+time_lbm);
