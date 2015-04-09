@@ -30,7 +30,7 @@ public class SimilarityOfGreedyAndHeuristics {
 		System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
 	}
 
-	private void begin(Graph g,int k,double[] p) {
+	private void begin(Graph g,int k,double[] p) { 
 		
 		
 		double[] greedy = new double[k];
