@@ -63,7 +63,7 @@ public class SimilarityOfGreedyAndHeuristics {
 //			database.write2Database(set.size(),ubm[i],set, dataName+"_ubm");
 //			time_ubm += f-e;
 		}
-		Print.print(greedy); 
+		Print.print(greedy);  
 		Print.print(lbm);     
 //		Print.print(ubm);
 		System.out.println("greedy total time->"+time_greedy);
