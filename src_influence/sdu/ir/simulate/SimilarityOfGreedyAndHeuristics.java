@@ -7,6 +7,7 @@ import java.util.Set;
 import sdu.ir.diffusionmodel.ICM3MultiThread;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.Graph;
+import sdu.ir.util.Constant;
 import sdu.ir.util.NodeInfluenceAbility;
 import sdu.ir.util.Util; 
 import test.Print;
@@ -19,14 +20,15 @@ public class SimilarityOfGreedyAndHeuristics {
 	public static void main(String[] args) {
 		
 		SimilarityOfGreedyAndHeuristics s = new SimilarityOfGreedyAndHeuristics();
-		dataName = "email2";
+		dataName = "dealedsocpokec";
 		double begin = System.currentTimeMillis();
-		String filePath = "E:\\dataset\\ccir2014\\"+dataName+".txt";
+		String filePath = Constant.filePathLinux+dataName+".txt";
 		ReadGraph rd = new ReadGraph();
 		Graph gh = rd.readTxtFile2Graph(filePath, "Adjacentlistwithoutweight",2," ");
 		double[] p = new double[]{0.1,0.05,0.01};
 //		database.createTables(dataName);
 		s.begin(gh,50,p);
+		s.begin(gh, 50, new double[]{0.3,0.1,0.01});
 		System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
 	}
 
