@@ -40,7 +40,7 @@ public class SimilarityOfGreedyAndHeuristics {
 		NodeInfluenceAbility nb = new NodeInfluenceAbility(g, k);
 		double time_greedy = 0;
 		double time_lbm = 0;
-		double time_ubm = 0;
+		double time_ubm = 0; 
 		for (int i = 0; i <k; i++) {
 			System.out.println((i+1)+"nodes");
 			Set<Integer> set = Util.random(0,g.size()-1,i+1);
