@@ -8,7 +8,7 @@ import sdu.ir.diffusionmodel.ICM3MultiThread;
 import sdu.ir.input.ReadGraph;
 import sdu.ir.interfaces.Graph;
 import sdu.ir.util.NodeInfluenceAbility;
-import sdu.ir.util.Util;
+import sdu.ir.util.Util; 
 import test.Print;
 
 public class SimilarityOfGreedyAndHeuristics {
