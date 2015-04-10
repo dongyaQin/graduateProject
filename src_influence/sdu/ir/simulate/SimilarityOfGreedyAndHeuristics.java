@@ -50,7 +50,7 @@ public class SimilarityOfGreedyAndHeuristics {
 			System.out.println("greedy"+(b-a)/1000);
 //			database.write2Database(set.size(),greedy[i],set, dataName+"_greedy");
 			time_greedy += b-a;
-			double c = System.currentTimeMillis();
+			double c = System.currentTimeMillis(); 
 			lbm[i] = nb.influenceSimulate(set, p); 
 			double d = System.currentTimeMillis();
 			System.out.println("lbm"+(d-c)/1000);
