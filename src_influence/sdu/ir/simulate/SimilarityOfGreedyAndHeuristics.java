@@ -30,7 +30,7 @@ public class SimilarityOfGreedyAndHeuristics {
 		System.out.println("totalTime ===>"+(System.currentTimeMillis()-begin)/1000f+"seconds");
 	}
 
-	private void begin(Graph g,int k,double[] p) {
+	private void begin(Graph g,int k,double[] p) { 
 		
 		
 		double[] greedy = new double[k];
@@ -40,7 +40,7 @@ public class SimilarityOfGreedyAndHeuristics {
 		NodeInfluenceAbility nb = new NodeInfluenceAbility(g, k);
 		double time_greedy = 0;
 		double time_lbm = 0;
-		double time_ubm = 0;
+		double time_ubm = 0;    
 		for (int i = 0; i <k; i++) {
 			System.out.println((i+1)+"nodes");
 			Set<Integer> set = Util.random(0,g.size()-1,i+1);
@@ -50,8 +50,8 @@ public class SimilarityOfGreedyAndHeuristics {
 			System.out.println("greedy"+(b-a)/1000);
 //			database.write2Database(set.size(),greedy[i],set, dataName+"_greedy");
 			time_greedy += b-a;
-			double c = System.currentTimeMillis();
-			lbm[i] = nb.influenceSimulate(set, p);
+			double c = System.currentTimeMillis(); 
+			lbm[i] = nb.influenceSimulate(set, p); 
 			double d = System.currentTimeMillis();
 			System.out.println("lbm"+(d-c)/1000);
 //			database.write2Database(set.size(),lbm[i],set, dataName+"_lbm");
